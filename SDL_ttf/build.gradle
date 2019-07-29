@@ -1,0 +1,62 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion gradle.sdkVersion
+
+    defaultConfig {
+        minSdkVersion gradle.minSdkVersion
+        targetSdkVersion gradle.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            externalNativeBuild {
+                ndkBuild {
+                    arguments "BUILD_TYPE=release"
+                }}
+        }
+        debug {
+            externalNativeBuild {
+                ndkBuild {
+                    arguments "BUILD_TYPE=debug"
+                }}
+        }
+    }
+    externalNativeBuild {
+        ndkBuild {
+            path 'src/main/cpp/Android.mk'
+        }
+    }
+    packagingOptions {
+        exclude '/lib/**/libSDL2.so'
+    }
+    task distributeLibs (type : Copy) {
+        copy {
+            into gradle.libDistributionRoot
+            from('src/main/cpp/SDL_ttf/SDL_ttf.h') {
+                into 'SDL_ttf/include'
+            }
+        }
+
+        copy {
+            into gradle.libDistributionRoot
+            include "*/libSDL2_ttf.so"
+            from('build/intermediates/ndkBuild/debug/obj/local') {
+                into 'SDL_ttf/lib/debug'
+            }
+        }
+
+        copy {
+            into gradle.libDistributionRoot
+            include "*/libSDL2_ttf.so"
+            from('build/intermediates/ndkBuild/release/obj/local') {
+                into 'SDL_ttf/lib/release'
+            }
+        }
+    }
+
+    afterEvaluate {
+        assemble.finalizedBy(distributeLibs)
+    }
+}

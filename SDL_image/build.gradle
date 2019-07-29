@@ -1,0 +1,142 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion gradle.sdkVersion
+
+    defaultConfig {
+        minSdkVersion gradle.minSdkVersion
+        targetSdkVersion gradle.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            externalNativeBuild {
+                ndkBuild {
+                    arguments "BUILD_TYPE=release"
+                }}
+        }
+        debug {
+            externalNativeBuild {
+                ndkBuild {
+                    arguments "BUILD_TYPE=debug"
+                }}
+        }
+    }
+    externalNativeBuild {
+        ndkBuild {
+            path 'src/main/cpp/Android.mk'
+        }
+    }
+    packagingOptions {
+        exclude '/lib/**/libSDL2.so'
+    }
+    task distributeLibs (type : Copy) {
+        copy {
+            into gradle.libDistributionRoot
+            from('src/main/cpp/SDL_image/SDL_image.h') {
+                into 'SDL_image/include'
+            }
+        }
+
+        copy {
+            into gradle.libDistributionRoot
+            include "*/libSDL2_image.so"
+            from('build/intermediates/ndkBuild/debug/obj/local') {
+                into 'SDL_image/lib/debug'
+            }
+        }
+
+        copy {
+            into gradle.libDistributionRoot
+            include "*/libSDL2_image.so"
+            from('build/intermediates/ndkBuild/release/obj/local') {
+                into 'SDL_image/lib/release'
+            }
+        }
+
+        copy {
+            into gradle.libDistributionRoot
+            from('src/main/cpp/SDL_image/external/jpeg-9b') {
+                include '*.h'
+                into 'jpeg/include'
+            }
+        }
+
+        copy {
+            into gradle.libDistributionRoot
+            include "*/libjpeg.a"
+            from('build/intermediates/ndkBuild/debug/obj/local') {
+                into 'SDL_image/lib/debug'
+            }
+        }
+
+        copy {
+            into gradle.libDistributionRoot
+            include "*/libjpeg.a"
+            from('build/intermediates/ndkBuild/release/obj/local') {
+                into 'SDL_image/lib/release'
+            }
+        }
+
+        copy {
+            into gradle.libDistributionRoot
+            from('src/main/cpp/SDL_image/external/libpng-1.6.37') {
+                include '*.h'
+                into 'png/include'
+            }
+        }
+
+        copy {
+            into gradle.libDistributionRoot
+            include "*/libpng.a"
+            from('build/intermediates/ndkBuild/debug/obj/local') {
+                into 'SDL_image/lib/debug'
+            }
+        }
+
+        copy {
+            into gradle.libDistributionRoot
+            include "*/libpng.a"
+            from('build/intermediates/ndkBuild/release/obj/local') {
+                into 'SDL_image/lib/release'
+            }
+        }
+
+        copy {
+            into gradle.libDistributionRoot
+            include "*/libwebp.a"
+            from('build/intermediates/ndkBuild/debug/obj/local') {
+                into 'SDL_image/lib/debug'
+            }
+        }
+
+        copy {
+            into gradle.libDistributionRoot
+            include "*/libwebp.a"
+            from('build/intermediates/ndkBuild/release/obj/local') {
+                into 'SDL_image/lib/release'
+            }
+        }
+
+        copy {
+            into gradle.libDistributionRoot
+            include "*/libwebpdecoder_static.a"
+            from('build/intermediates/ndkBuild/debug/obj/local') {
+                into 'SDL_image/lib/debug'
+            }
+        }
+
+        copy {
+            into gradle.libDistributionRoot
+            include "*/libwebpdecoder_static.a"
+            from('build/intermediates/ndkBuild/release/obj/local') {
+                into 'SDL_image/lib/release'
+            }
+        }
+    }
+
+    afterEvaluate {
+        assemble.finalizedBy(distributeLibs)
+    }
+}

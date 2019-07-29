@@ -1,0 +1,51 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion gradle.sdkVersion
+
+    defaultConfig {
+        minSdkVersion gradle.minSdkVersion
+        targetSdkVersion gradle.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            externalNativeBuild {
+                ndkBuild {
+                    arguments "BUILD_TYPE=release"
+                }}
+        }
+        debug {
+            externalNativeBuild {
+                ndkBuild {
+                    arguments "BUILD_TYPE=debug"
+                }}
+        }
+    }
+    externalNativeBuild {
+        ndkBuild {
+            path '../SDL2/src/main/cpp/SDL/src/hidapi/android/jni/Android.mk'
+        }
+    }
+    task distributeLibs (type : Copy) {
+        copy {
+            into gradle.libDistributionRoot
+            include "*/libhidapi.so"
+            from('build/intermediates/ndkBuild/debug/obj/local') {
+                into 'hidapi/lib/debug'
+            }
+        }
+        copy {
+            into gradle.libDistributionRoot
+            include "*/libhidapi.so"
+            from('build/intermediates/ndkBuild/release/obj/local') {
+                into 'hidapi/lib/release'
+            }
+        }
+    }
+
+    afterEvaluate {
+        assemble.finalizedBy(distributeLibs)
+    }
+}

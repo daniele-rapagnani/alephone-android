@@ -1,0 +1,65 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion gradle.sdkVersion
+
+    defaultConfig {
+        minSdkVersion gradle.minSdkVersion
+        targetSdkVersion gradle.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+
+        externalNativeBuild {
+            cmake {
+                arguments "-DCMAKE_VERBOSE_MAKEFILE:BOOL=ON"
+                targets 'SDL2main', 'SDL2'
+            }
+
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'),
+                    'proguard-rules.pro'
+        }
+    }
+    externalNativeBuild {
+        cmake {
+            path 'src/main/cpp/CMakeLists.txt'
+        }
+    }
+    sourceSets {
+        main {
+            manifest.srcFile "src/main/cpp/SDL/android-project/app/src/main/AndroidManifest.xml"
+            java.srcDirs = ["src/main/cpp/SDL/android-project/app/src/main/java"]
+            res.srcDirs = ["src/main/cpp/SDL/android-project/app/src/main/res"]
+        }
+    }
+    task distributeLibs (type : Copy) {
+        copy {
+            into gradle.libDistributionRoot
+            from('src/main/cpp/SDL/include') {
+                into 'SDL2/include/SDL'
+            }
+        }
+
+        copy {
+            into gradle.libDistributionRoot
+            from('build/intermediates/cmake/debug/obj') {
+                into 'SDL2/lib/debug'
+            }
+        }
+
+        copy {
+            into gradle.libDistributionRoot
+            from('build/intermediates/cmake/release/obj') {
+                into 'SDL2/lib/release'
+            }
+        }
+    }
+
+    afterEvaluate {
+        assemble.finalizedBy(distributeLibs)
+    }
+}

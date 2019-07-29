@@ -1,0 +1,18 @@
+[submodule "SDL2/src/main/cpp/SDL"]
+	path = SDL2/src/main/cpp/SDL
+	url = git@github.com:daniele-rapagnani/SDL-mirror.git
+[submodule "SDL_image/src/main/cpp/SDL_image"]
+	path = SDL_image/src/main/cpp/SDL_image
+	url = git@github.com:SDL-mirror/SDL_image.git
+[submodule "SDL_mixer/src/main/cpp/SDL_mixer"]
+	path = SDL_mixer/src/main/cpp/SDL_mixer
+	url = git@github.com:SDL-mirror/SDL_mixer.git
+[submodule "SDL_net/src/main/cpp/SDL_net"]
+	path = SDL_net/src/main/cpp/SDL_net
+	url = git@github.com:SDL-mirror/SDL_net.git
+[submodule "SDL_ttf/src/main/cpp/SDL_ttf"]
+	path = SDL_ttf/src/main/cpp/SDL_ttf
+	url = git@github.com:daniele-rapagnani/SDL_ttf.git
+[submodule "app/src/main/cpp/alephone"]
+	path = app/src/main/cpp/alephone
+	url = git@github.com:daniele-rapagnani/alephone.git

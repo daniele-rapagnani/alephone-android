@@ -14,6 +14,22 @@ You can get the marathon series data files from:
 - [Marathon 2](https://github.com/Aleph-One-Marathon/data-marathon-2)
 - [Marathon Infinity](https://github.com/Aleph-One-Marathon/data-marathon-infinity)
 
+## How to play
+
+Controls are explained below, the rectangle represents the screen:
+
+```
+ ________________________________________________________________________________________
+|                         |  Swipe Left/Right Changes Weapon  |                          |
+|      Second Trigger     |                                   |                          |
+|                         |      Swipe Down Toggles Map       |                          |
+|_________________________|___________________________________|__________________________|
+|                         |                                   |                          |
+|      First Trigger      |            Action                 |       Digital Stick      |
+|                         |                                   |                          |
+|_________________________|___________________________________|__________________________|
+```
+
 ## Building
 
 ### Dependencies

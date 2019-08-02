@@ -148,6 +148,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/boost_1_70_0)
 add_compile_definitions(HAVE_UNISTD_H)
 add_compile_definitions(HAVE_LUA)
 add_compile_definitions(HAVE_MEMMOVE)
+add_compile_definitions(HAVE_SDL_IMAGE)
 add_compile_definitions(SDL)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/alephone)
 

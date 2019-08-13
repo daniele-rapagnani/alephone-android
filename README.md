@@ -2,7 +2,7 @@
 
 ## What is this?
 This is a port of the [AlephOne](https://alephone.lhowon.org/) engine to Android.
-Yes, this means you can now pay the Marathon saga on your Android phone! :robot:
+Yes, this means you can now play the Marathon saga on your Android phone! :robot:
 
 ## How to run
 Install the APK and then copy the game's data files to `/sdcard/alephone`.

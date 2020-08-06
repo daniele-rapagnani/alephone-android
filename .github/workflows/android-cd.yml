@@ -6,7 +6,6 @@ on:
       releaseTag:
         description: "The name of this release"
         required: true
-        default: "${{ github.ref }}"
       releaseMessage:
         description: "The body of this release"
         required: true

@@ -2,8 +2,9 @@ name: Android CD
 
 on:
   workflow_dispatch:
-  tag:
-    - 'v*'
+  push:   
+    tags:
+      - 'v*'
 
 jobs:
   build:

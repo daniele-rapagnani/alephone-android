@@ -2,7 +2,7 @@ name: Android CD
 
 on:
   workflow_dispatch:
-    input:
+    inputs:
       releaseTag:
         description: "The name of this release"
         required: true

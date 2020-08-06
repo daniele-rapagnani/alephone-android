@@ -20,5 +20,9 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
+    - name: install-cmake
+      uses: Symbitic/install-cmake@v0.1.0
+      with:
+        cmake: '3.14.4'
     - name: Build with Gradle
       run: ./gradlew assembleMarathon2Release

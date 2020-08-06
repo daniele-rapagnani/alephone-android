@@ -14,11 +14,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        sumbodules: 'recursive'
     - name: set up JDK 1.8
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - name: submodules-init
-      uses: snickerbockers/submodules-init@v4
     - name: Build with Gradle
       run: ./gradlew assembleMarathon2Release

@@ -2,9 +2,15 @@ name: Android CD
 
 on:
   workflow_dispatch:
-  push:   
-    tags:
-      - 'v*'
+    input:
+      releaseTag:
+        description: "The name of this release"
+        required: true
+        default: "${{ github.ref }}"
+      releaseMessage:
+        description: "The body of this release"
+        required: true
+        default: "New release"
 
 jobs:
   build:
@@ -61,8 +67,9 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
+        tag_name: ${{ github.event.inputs.releaseTag }}
+        release_name: Release ${{ github.event.inputs.releaseTag }}
+        body: ${{ github.event.inputs.releaseBody }}
         draft: true
         prerelease: true
     - name: Upload Marathon

@@ -61,7 +61,7 @@ jobs:
     - name: Create Marathon Infinity zip
       run: zip -j marathonInf.zip -r app/build/outputs/apk/marathonInfinity/release/*.apk
     - name: Create release
-      id: create_release
+      id: create-release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -72,7 +72,7 @@ jobs:
         draft: true
         prerelease: true
     - name: Upload Marathon
-      id: upload-release-asset
+      id: upload-marathon
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -82,7 +82,7 @@ jobs:
         asset_name: marathon.zip
         asset_content_type: application/zip
     - name: Upload Marathon 2
-      id: upload-release-asset
+      id: upload-marathon2
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -92,7 +92,7 @@ jobs:
         asset_name: marathon2.zip
         asset_content_type: application/zip
     - name: Upload Marathon Infinity
-      id: upload-release-asset
+      id: upload-marathonInf
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

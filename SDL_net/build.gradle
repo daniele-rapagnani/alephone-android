@@ -14,13 +14,15 @@ android {
             externalNativeBuild {
                 ndkBuild {
                     arguments "BUILD_TYPE=release"
-                }}
+                }
+            }
         }
         debug {
             externalNativeBuild {
                 ndkBuild {
                     arguments "BUILD_TYPE=debug"
-                }}
+                }
+            }
         }
     }
     externalNativeBuild {
@@ -31,32 +33,11 @@ android {
     packagingOptions {
         exclude '/lib/**/libSDL2.so'
     }
-    task distributeLibs (type : Copy) {
-        copy {
-            into gradle.libDistributionRoot
-            from('src/main/cpp/SDL_net/SDL_net.h') {
-                into 'SDL_net/include'
-            }
-        }
-
-        copy {
-            into gradle.libDistributionRoot
-            include "*/libSDL2_net.so"
-            from('build/intermediates/ndkBuild/debug/obj/local') {
-                into 'SDL_net/lib/debug'
-            }
-        }
-
-        copy {
-            into gradle.libDistributionRoot
-            include "*/libSDL2_net.so"
-            from('build/intermediates/ndkBuild/release/obj/local') {
-                into 'SDL_net/lib/release'
-            }
-        }
-    }
 
     afterEvaluate {
-        assemble.finalizedBy(distributeLibs)
+        defineDistributeTasks(project, [
+            distHeaders("SDL_net/SDL_net.h"),
+            distLib("libSDL2_net.so"),
+        ])
     }
 }

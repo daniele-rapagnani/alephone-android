@@ -31,32 +31,11 @@ android {
     packagingOptions {
         exclude '/lib/**/libSDL2.so'
     }
-    task distributeLibs (type : Copy) {
-        copy {
-            into gradle.libDistributionRoot
-            from('src/main/cpp/SDL_ttf/SDL_ttf.h') {
-                into 'SDL_ttf/include'
-            }
-        }
-
-        copy {
-            into gradle.libDistributionRoot
-            include "*/libSDL2_ttf.so"
-            from('build/intermediates/ndkBuild/debug/obj/local') {
-                into 'SDL_ttf/lib/debug'
-            }
-        }
-
-        copy {
-            into gradle.libDistributionRoot
-            include "*/libSDL2_ttf.so"
-            from('build/intermediates/ndkBuild/release/obj/local') {
-                into 'SDL_ttf/lib/release'
-            }
-        }
-    }
 
     afterEvaluate {
-        assemble.finalizedBy(distributeLibs)
+        defineDistributeTasks(project, [
+            distHeaders("SDL_ttf/SDL_ttf.h"),
+            distLib("libSDL2_ttf.so"),
+        ])
     }
 }

@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file('/Users/daniele/Development/Projects/alephone/release-key.keystore')
+            storePassword 'alephone'
+            keyAlias = 'alias_name'
+            keyPassword 'alephone'
+        }
+    }
     compileSdkVersion 29
     buildToolsVersion "29.0.0"
     defaultConfig {
@@ -17,6 +25,21 @@ android {
             }
         }
     }
+    flavorDimensions "games"
+    productFlavors {
+        marathon {
+            dimension "games"
+            applicationId = "com.alephone.marathon"
+        }
+        marathon2 {
+            dimension "games"
+            applicationId = "com.alephone.marathon2"
+        }
+        marathonInfinity {
+            dimension "games"
+            applicationId = "com.alephone.marathoninfinity"
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -27,6 +50,13 @@ android {
         cmake {
             path "src/main/cpp/CMakeLists.txt"
             version "3.14.4"
+        }
+    }
+    splits {
+        abi {
+            enable true
+            reset()
+            include "armeabi-v7a", "arm64-v8a"
         }
     }
 }

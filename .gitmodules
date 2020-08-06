@@ -16,3 +16,12 @@
 [submodule "app/src/main/cpp/alephone"]
 	path = app/src/main/cpp/alephone
 	url = git@github.com:daniele-rapagnani/alephone.git
+[submodule "app/src/marathon/assets"]
+	path = app/src/marathon/assets
+	url = git@github.com:Aleph-One-Marathon/data-marathon.git
+[submodule "app/src/marathon2/assets"]
+	path = app/src/marathon2/assets
+	url = git@github.com:Aleph-One-Marathon/data-marathon-2.git
+[submodule "app/src/marathonInfinity/assets"]
+	path = app/src/marathonInfinity/assets
+	url = https://github.com/Aleph-One-Marathon/data-marathon-infinity

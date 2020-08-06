@@ -31,128 +31,17 @@ android {
     packagingOptions {
         exclude '/lib/**/libSDL2.so'
     }
-    task distributeLibs (type : Copy) {
-        copy {
-            into gradle.libDistributionRoot
-            from('src/main/cpp/SDL_mixer/SDL_mixer.h') {
-                into 'SDL_mixer/include'
-            }
-        }
-
-        copy {
-            into gradle.libDistributionRoot
-            include "*/libSDL2_mixer.so"
-            from('build/intermediates/ndkBuild/debug/obj/local') {
-                into 'SDL_mixer/lib/debug'
-            }
-        }
-
-        copy {
-            into gradle.libDistributionRoot
-            include "*/libSDL2_mixer.so"
-            from('build/intermediates/ndkBuild/release/obj/local') {
-                into 'SDL_mixer/lib/release'
-            }
-        }
-
-        copy {
-            into gradle.libDistributionRoot
-            include "*/libFLAC.a"
-            from('build/intermediates/ndkBuild/debug/obj/local') {
-                into 'SDL_mixer/lib/debug'
-            }
-        }
-
-        copy {
-            into gradle.libDistributionRoot
-            include "*/libFLAC.a"
-            from('build/intermediates/ndkBuild/release/obj/local') {
-                into 'SDL_mixer/lib/release'
-            }
-        }
-
-        copy {
-            into gradle.libDistributionRoot
-            include "*/libogg.a"
-            from('build/intermediates/ndkBuild/debug/obj/local') {
-                into 'SDL_mixer/lib/debug'
-            }
-        }
-
-        copy {
-            into gradle.libDistributionRoot
-            include "*/libogg.a"
-            from('build/intermediates/ndkBuild/release/obj/local') {
-                into 'SDL_mixer/lib/release'
-            }
-        }
-
-        copy {
-            into gradle.libDistributionRoot
-            include "*/libvorbisidec.a"
-            from('build/intermediates/ndkBuild/debug/obj/local') {
-                into 'SDL_mixer/lib/debug'
-            }
-        }
-
-        copy {
-            into gradle.libDistributionRoot
-            include "*/libvorbisidec.a"
-            from('build/intermediates/ndkBuild/release/obj/local') {
-                into 'SDL_mixer/lib/release'
-            }
-        }
-
-        copy {
-            into gradle.libDistributionRoot
-            include "*/libmodplug.a"
-            from('build/intermediates/ndkBuild/debug/obj/local') {
-                into 'SDL_mixer/lib/debug'
-            }
-        }
-
-        copy {
-            into gradle.libDistributionRoot
-            include "*/libmodplug.a"
-            from('build/intermediates/ndkBuild/release/obj/local') {
-                into 'SDL_mixer/lib/release'
-            }
-        }
-
-        copy {
-            into gradle.libDistributionRoot
-            include "*/libmpg123.so"
-            from('build/intermediates/ndkBuild/debug/obj/local') {
-                into 'SDL_mixer/lib/debug'
-            }
-        }
-
-        copy {
-            into gradle.libDistributionRoot
-            include "*/libmpeg123.so"
-            from('build/intermediates/ndkBuild/release/obj/local') {
-                into 'SDL_mixer/lib/release'
-            }
-        }
-
-        copy {
-            into gradle.libDistributionRoot
-            include "*/libtimidity.a"
-            from('build/intermediates/ndkBuild/debug/obj/local') {
-                into 'SDL_mixer/lib/debug'
-            }
-        }
-
-        copy {
-            into gradle.libDistributionRoot
-            include "*/libtimidity.a"
-            from('build/intermediates/ndkBuild/release/obj/local') {
-                into 'SDL_mixer/lib/release'
-            }
-        }
-    }
 
     afterEvaluate {
-        assemble.finalizedBy(distributeLibs)
+        defineDistributeTasks(project, [
+            distHeaders("SDL_mixer/SDL_mixer.h"),
+            distLib("libSDL2_mixer.so"),
+            distLib("libFLAC.a"),
+            distLib("libogg.a"),
+            distLib("libvorbisidec.a"),
+            distLib("libmodplug.a"),
+            distLib("libmpg123.so"),
+            distLib("libtimidity.a")
+        ])
     }
 }

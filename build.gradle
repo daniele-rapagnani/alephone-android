@@ -1,4 +1,6 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
+import java.nio.file.Paths
+import java.security.MessageDigest
 
 buildscript {
     repositories {
@@ -23,4 +25,99 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+task cleanDistribution(type: Delete) {
+    delete gradle.libDistributionRoot
+}
+
+ext.getFileHash = {
+    String path ->
+        File f = new File(path)
+
+        if (!f.exists() || f.isDirectory()) {
+            logger.info("File '${path}' does not exist or is a directory")
+            return ""
+        }
+
+        byte[] data = f.readBytes()
+        def hash = MessageDigest.getInstance("MD5").digest(data).encodeHex().toString()
+
+        logger.info("File '${path}' hash is: ${hash}")
+
+        return hash
+}
+
+ext.distHeaders = {
+    from, into = null ->
+        return [
+                from: "src/main/cpp/" + from,
+                into: into ? into : "@@projName@@/include",
+                include: "**/*.h"
+        ]
+}
+
+ext.distLib = {
+    libName, type = "ndkBuild", projName = "@@projName@@", from = null ->
+        return [
+            from: from ? from : "build/intermediates/${type}/@@buildType@@/obj" + (type == "ndkBuild" ? "/local" : ""),
+            into: projName + "/lib/@@buildType@@",
+            include: "**/" + libName
+        ]
+}
+
+ext.defineDistributeTask = {
+    prj, buildType, files, name = "distributeLibs" ->
+        project(prj.name) {
+            def taskName = "${name}${buildType.capitalize()}"
+            task(taskName) {
+                def projPath = prj.file(".").getPath()
+                doLast {
+                    files.each {
+                        entry ->
+                            def intoPath = Paths.get(project(":").file(".").getPath(), gradle.libDistributionRoot).toAbsolutePath().toString()
+                            def fromPath = Paths.get(projPath, entry["from"].replaceAll("@@buildType@@", buildType))
+                                    .toAbsolutePath()
+                                    .toString()
+
+                            def subIntoPath = entry["into"]
+                                    .replaceAll("@@buildType@@", buildType)
+                                    .replaceAll("@@projName@@", prj.name)
+
+                            def includeGlob = entry.containsKey("include") ? entry["include"] : "**/*"
+
+                            copy {
+                                into intoPath
+                                include includeGlob
+                                from(fromPath) {
+                                    into subIntoPath
+                                }
+                                eachFile {
+                                    FileCopyDetails file ->
+                                        def sourceHash = getFileHash(file.getFile().getAbsolutePath())
+                                        def destHash = getFileHash(Paths.get(intoPath, file.path).toAbsolutePath().toString())
+
+                                        if (sourceHash == destHash) {
+                                            logger.info("Skipping distribution copy of: " + file)
+                                            file.exclude()
+                                            return;
+                                        }
+
+                                        logger.info("Copying for distribution: " + file)
+                                }
+                            }
+                    }
+                }
+            }
+
+            tasks.getByPath(":${prj.name}:externalNativeBuild${buildType.capitalize()}").finalizedBy(taskName)
+        }
+}
+
+ext.defineDistributeTasks = {
+    prj, files, name = "distributeLibs" -> (
+        prj.android.buildTypes.all {
+            buildType -> defineDistributeTask(prj, buildType.name, files, name)
+        }
+    )
 }

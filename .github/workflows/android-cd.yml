@@ -55,11 +55,11 @@ jobs:
         keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
         keyPassword: ${{ secrets.KEY_PASSWORD }}
     - name: Create Marathon 2 zip
-      run: zip -j marathon2.zip -r app/build/outputs/apk/marathon2/release/*.apk
+      run: zip -j marathon2.zip -r app/build/outputs/apk/marathon2/release/*-signed.apk
     - name: Create Marathon zip
-      run: zip -j marathon.zip -r app/build/outputs/apk/marathon/release/*.apk
+      run: zip -j marathon.zip -r app/build/outputs/apk/marathon/release/*-signed.apk
     - name: Create Marathon Infinity zip
-      run: zip -j marathonInf.zip -r app/build/outputs/apk/marathonInfinity/release/*.apk
+      run: zip -j marathonInf.zip -r app/build/outputs/apk/marathonInfinity/release/*-signed.apk
     - name: Create release
       id: create_release
       uses: actions/create-release@v1

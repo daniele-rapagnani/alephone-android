@@ -31,6 +31,7 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew assembleRelease
     - name: Sign Marathon 2 APKs
+      id: sign_marathon2
       uses: r0adkll/sign-android-release@v1
       with:
         releaseDirectory: app/build/outputs/apk/marathon2/release
@@ -39,6 +40,7 @@ jobs:
         keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
         keyPassword: ${{ secrets.KEY_PASSWORD }}
     - name: Sign Marathon APKs
+      id: sign_marathon
       uses: r0adkll/sign-android-release@v1
       with:
         releaseDirectory: app/build/outputs/apk/marathon/release
@@ -47,6 +49,7 @@ jobs:
         keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
         keyPassword: ${{ secrets.KEY_PASSWORD }}
     - name: Sign Marathon Infinity APKs
+      id: sign_marathon_inf
       uses: r0adkll/sign-android-release@v1
       with:
         releaseDirectory: app/build/outputs/apk/marathonInfinity/release
@@ -54,12 +57,6 @@ jobs:
         alias: ${{ secrets.ALIAS }}
         keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
         keyPassword: ${{ secrets.KEY_PASSWORD }}
-    - name: Create Marathon 2 zip
-      run: zip -j marathon2.zip -r app/build/outputs/apk/marathon2/release/*-signed.apk
-    - name: Create Marathon zip
-      run: zip -j marathon.zip -r app/build/outputs/apk/marathon/release/*-signed.apk
-    - name: Create Marathon Infinity zip
-      run: zip -j marathonInf.zip -r app/build/outputs/apk/marathonInfinity/release/*-signed.apk
     - name: Create release
       id: create_release
       uses: actions/create-release@v1
@@ -78,9 +75,9 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./marathon.zip
-        asset_name: marathon.zip
-        asset_content_type: application/zip
+        asset_path: ${{ steps.sign_marathon.signedReleaseFile }}
+        asset_name: marathon-signed.apk
+        asset_content_type: application/vnd.android.package-archive
     - name: Upload Marathon 2
       id: upload-marathon2
       uses: actions/upload-release-asset@v1
@@ -88,9 +85,9 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./marathon2.zip
-        asset_name: marathon2.zip
-        asset_content_type: application/zip
+        asset_path: ${{ steps.sign_marathon2.signedReleaseFile }}
+        asset_name: marathon-signed.apk
+        asset_content_type: application/vnd.android.package-archive
     - name: Upload Marathon Infinity
       id: upload-marathonInf
       uses: actions/upload-release-asset@v1
@@ -98,6 +95,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./marathonInf.zip
-        asset_name: marathonInf.zip
-        asset_content_type: application/zip
+        asset_path: ${{ steps.sign_marathon_inf.signedReleaseFile }}
+        asset_name: marathon-inf-signed.apk
+        asset_content_type: application/vnd.android.package-archive

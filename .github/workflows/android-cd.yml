@@ -78,7 +78,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./mrathon.zip
+        asset_path: ./marathon.zip
         asset_name: marathon.zip
         asset_content_type: application/zip
     - name: Upload Marathon 2
@@ -88,7 +88,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./mrathon2.zip
+        asset_path: ./marathon2.zip
         asset_name: marathon2.zip
         asset_content_type: application/zip
     - name: Upload Marathon Infinity
@@ -98,6 +98,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./mrathonInf.zip
+        asset_path: ./marathonInf.zip
         asset_name: marathonInf.zip
         asset_content_type: application/zip

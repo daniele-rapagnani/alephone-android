@@ -28,8 +28,10 @@ jobs:
       uses: Symbitic/install-cmake@v0.1.0
       with:
         cmake: '3.14.4'
+    - name: List Android SDK packages
+      run: sdkmanager --list
     - name: Build with Gradle
-      run: ./gradlew assembleRelease
+      run: ./gradlew assembleMarathon2Release
     - name: Sign Marathon 2 APKs
       id: sign_marathon2
       uses: r0adkll/sign-android-release@v1
@@ -39,24 +41,24 @@ jobs:
         alias: ${{ secrets.ALIAS }}
         keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
         keyPassword: ${{ secrets.KEY_PASSWORD }}
-    - name: Sign Marathon APKs
-      id: sign_marathon
-      uses: r0adkll/sign-android-release@v1
-      with:
-        releaseDirectory: app/build/outputs/apk/marathon/release
-        signingKeyBase64: ${{ secrets.SIGNING_KEY }}
-        alias: ${{ secrets.ALIAS }}
-        keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
-        keyPassword: ${{ secrets.KEY_PASSWORD }}
-    - name: Sign Marathon Infinity APKs
-      id: sign_marathon_inf
-      uses: r0adkll/sign-android-release@v1
-      with:
-        releaseDirectory: app/build/outputs/apk/marathonInfinity/release
-        signingKeyBase64: ${{ secrets.SIGNING_KEY }}
-        alias: ${{ secrets.ALIAS }}
-        keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
-        keyPassword: ${{ secrets.KEY_PASSWORD }}
+    #- name: Sign Marathon APKs
+    #  id: sign_marathon
+    #  uses: r0adkll/sign-android-release@v1
+    #  with:
+    #    releaseDirectory: app/build/outputs/apk/marathon/release
+    #    signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+    #    alias: ${{ secrets.ALIAS }}
+    #    keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+    #    keyPassword: ${{ secrets.KEY_PASSWORD }}
+    #- name: Sign Marathon Infinity APKs
+    #  id: sign_marathon_inf
+    #  uses: r0adkll/sign-android-release@v1
+    #  with:
+    #    releaseDirectory: app/build/outputs/apk/marathonInfinity/release
+    #    signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+    #    alias: ${{ secrets.ALIAS }}
+    #    keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+    #    keyPassword: ${{ secrets.KEY_PASSWORD }}
     - name: Create release
       id: create_release
       uses: actions/create-release@v1
@@ -68,16 +70,16 @@ jobs:
         body: ${{ github.event.inputs.releaseBody }}
         draft: true
         prerelease: true
-    - name: Upload Marathon
-      id: upload-marathon
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ${{ steps.sign_marathon.outputs.signedReleaseFile }}
-        asset_name: marathon-signed.apk
-        asset_content_type: application/vnd.android.package-archive
+    #- name: Upload Marathon
+    #  id: upload-marathon
+    #  uses: actions/upload-release-asset@v1
+    #  env:
+    #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #  with:
+    #    upload_url: ${{ steps.create_release.outputs.upload_url }}
+    #    asset_path: ${{ steps.sign_marathon.outputs.signedReleaseFile }}
+    #    asset_name: marathon-signed.apk
+    #    asset_content_type: application/vnd.android.package-archive
     - name: Upload Marathon 2
       id: upload-marathon2
       uses: actions/upload-release-asset@v1
@@ -88,13 +90,13 @@ jobs:
         asset_path: ${{ steps.sign_marathon2.outputs.signedReleaseFile }}
         asset_name: marathon2-signed.apk
         asset_content_type: application/vnd.android.package-archive
-    - name: Upload Marathon Infinity
-      id: upload-marathonInf
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ${{ steps.sign_marathon_inf.outputs.signedReleaseFile }}
-        asset_name: marathon-inf-signed.apk
-        asset_content_type: application/vnd.android.package-archive
+    #- name: Upload Marathon Infinity
+    #  id: upload-marathonInf
+    #  uses: actions/upload-release-asset@v1
+    #  env:
+    #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #  with:
+    #    upload_url: ${{ steps.create_release.outputs.upload_url }}
+    #    asset_path: ${{ steps.sign_marathon_inf.outputs.signedReleaseFile }}
+    #    asset_name: marathon-inf-signed.apk
+    #    asset_content_type: application/vnd.android.package-archive

@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
+    ndkVersion gradle.ndkVersion
+    
     signingConfigs {
         debug {
             storeFile file('/Users/daniele/Development/Projects/alephone/release-key.keystore')

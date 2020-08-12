@@ -3,5 +3,6 @@ gradle.ext.sdkVersion = 28
 gradle.ext.minSdkVersion = 13
 gradle.ext.targetSdkVersion = 28
 gradle.ext.libDistributionRoot = 'distribution'
+gradle.ext.ndkVersion = "21.3.6528147" //"20.0.5594570"
 
 include ':app', ':SDL2', ':SDL_image', ':SDL_mixer', ':SDL_ttf', ':SDL_net', ':hidapi'

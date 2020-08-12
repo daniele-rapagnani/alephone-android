@@ -29,7 +29,7 @@ jobs:
       with:
         cmake: '3.14.4'
     - name: List Android SDK packages
-      run: sdkmanager --list
+      run: /usr/local/lib/android/sdk/tools/bin/sdkmanager --list
     - name: Build with Gradle
       run: ./gradlew assembleMarathon2Release
     - name: Sign Marathon 2 APKs

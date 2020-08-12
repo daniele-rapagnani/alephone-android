@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 
 android {
+    ndkVersion gradle.ndkVersion
     compileSdkVersion gradle.sdkVersion
 
     defaultConfig {

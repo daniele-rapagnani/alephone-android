@@ -40,7 +40,7 @@ jobs:
       continue-on-error: true
 
     - name: Build with Gradle
-      run: ./gradlew assembleMarathon2Release
+      run: ./gradlew assembleRelease
 
     - name: Sign Marathon 2 APKs
       id: sign_marathon2

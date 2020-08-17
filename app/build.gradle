@@ -54,13 +54,17 @@ android {
             version "3.14.4"
         }
     }
-    splits {
+    
+    // I'll disable splits for now considering we are not
+    // uploading the builds on the store.
+    
+    /*splits {
         abi {
             enable true
             reset()
             include "armeabi-v7a", "arm64-v8a"
         }
-    }
+    }*/
 }
 
 dependencies {

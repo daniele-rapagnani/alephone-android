@@ -32,7 +32,7 @@ jobs:
     - name: Download NDK sysroot patch
       run: curl "https://android-review.googlesource.com/changes/platform%2Fndk~1318770/revisions/1/patch?zip" > /tmp/ndkfix.zip && unzip -d /tmp/ /tmp/ndkfix.zip
     - name: Apply NDK sysroot patch
-      run: cd "${ANDROID_SDK_ROOT}/ndk-bundle" && patch -t -p1 < /tmp/f563d92.diff
+      run: cd "${ANDROID_SDK_ROOT}/ndk-bundle" && sudo patch -t -p1 < /tmp/f563d92.diff
     - name: Build with Gradle
       run: ./gradlew assembleMarathon2Release
     - name: Sign Marathon 2 APKs

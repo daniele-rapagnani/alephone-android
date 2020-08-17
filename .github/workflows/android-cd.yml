@@ -28,10 +28,11 @@ jobs:
       uses: Symbitic/install-cmake@v0.1.0
       with:
         cmake: '3.14.4'
-    - name: Uninstall builtin NDK
-      run: echo "y" | sudo /usr/local/lib/android/sdk/tools/bin/sdkmanager --uninstall "ndk;21.3.6528147"
-    - name: Install correct NDK
-      run: echo "y" | sudo /usr/local/lib/android/sdk/tools/bin/sdkmanager --install "ndk;20.0.5594570" --sdk_root="${ANDROID_SDK_ROOT}"
+    # See: https://github.com/android/ndk/issues/929
+    - name: Download NDK sysroot patch
+      run: curl "https://android-review.googlesource.com/changes/platform%2Fndk~1318770/revisions/1/patch?zip" > /tmp/ndkfix.zip && unzip -d /tmp/ /tmp/ndkfix.zip
+    - name: Apply NDK sysroot patch
+      run: cd "${ANDROID_SDK_ROOT}/ndk-bundle" && patch -t -p1 < /tmp/f563d92.diff
     - name: Build with Gradle
       run: ./gradlew assembleMarathon2Release
     - name: Sign Marathon 2 APKs

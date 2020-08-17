@@ -8,6 +8,11 @@ Yes, this means you can now play the Marathon saga on your Android phone! :robot
 Download the APK of the desired chapter from the [releases](https://github.com/daniele-rapagnani/alephone-android/releases) page from your phone and install it. 
 Your phone may complain about the APKs signature as it is not registered with the Google Play Store, simply ignore the warnings. Enjoy!
 
+## Known Issues
+
+* Marathon 2/Infinity take a lot of time to start (on some phones even a minute or so), it looks like the app is frozen but it's not. After that the game goes on smoothly.
+* If you put the app in background the screen is not redrawn unless you start moving.
+
 ## How to play
 
 The game supports playing with both a bluetooth keyboard and a bluetooth joystick!

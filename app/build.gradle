@@ -1,3 +1,5 @@
+import java.nio.file.Paths
+
 apply plugin: 'com.android.application'
 
 android {
@@ -58,6 +60,34 @@ android {
         }
     }*/
 }
+
+task bakeAssetsList {
+    android.productFlavors.all { flavor ->
+        def paths = [];
+
+        fileTree(project.file("src/${flavor.name}/assets")).visit {
+            FileVisitDetails details ->
+                paths.add(details.file);
+        }
+
+        def listFile = project.file("src/${flavor.name}/assets/__baked_fs");
+        def assetsDir = project.file("src/${flavor.name}/assets/")
+
+        if (listFile.exists()) {
+            listFile.delete()
+        }
+
+        listFile << paths.size() << "\n"
+
+        paths.each { File file ->
+            listFile << file.getPath().replace(assetsDir.getAbsolutePath() + "/", "") << "\n"
+            listFile << (file.isDirectory() ? "D" : "F") << " "
+            listFile << file.length() << "\n"
+        }
+    }
+}
+
+assemble.dependsOn(bakeAssetsList)
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])

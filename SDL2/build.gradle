@@ -12,8 +12,8 @@ android {
 
         externalNativeBuild {
             cmake {
-                arguments "-DCMAKE_VERBOSE_MAKEFILE:BOOL=ON"
-                targets 'SDL2main', 'SDL2'
+                arguments "-DCMAKE_VERBOSE_MAKEFILE:BOOL=ON", "-DHIDAPI:BOOL=ON", "-DSDL_SHARED:BOOL=ON"
+                targets 'hidapi', 'SDL2main', 'SDL2'
             }
 
         }

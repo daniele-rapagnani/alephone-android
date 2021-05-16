@@ -8,3 +8,4 @@ build/
 /distribution/*
 !/distribution/.gitkeep
 .externalNativeBuild
+__baked_fs

@@ -118,7 +118,7 @@ set_target_properties(
 add_library(hidapi SHARED IMPORTED)
 set_target_properties(
         hidapi PROPERTIES IMPORTED_LOCATION
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../../distribution/hidapi/lib/${LIB_BUILD_TYPE_DIR}/${CMAKE_ANDROID_ARCH_ABI}/libhidapi.so
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../../distribution/SDL2/lib/${LIB_BUILD_TYPE_DIR}/${CMAKE_ANDROID_ARCH_ABI}/libhidapi.so
 )
 
 # SDL2_ttf

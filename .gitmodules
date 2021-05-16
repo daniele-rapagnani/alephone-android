@@ -1,6 +1,3 @@
-[submodule "SDL2/src/main/cpp/SDL"]
-	path = SDL2/src/main/cpp/SDL
-	url = git@github.com:daniele-rapagnani/SDL-mirror.git
 [submodule "SDL_image/src/main/cpp/SDL_image"]
 	path = SDL_image/src/main/cpp/SDL_image
 	url = git@github.com:SDL-mirror/SDL_image.git
@@ -25,3 +22,6 @@
 [submodule "app/src/marathonInfinity/assets"]
 	path = app/src/marathonInfinity/assets
 	url = https://github.com/Aleph-One-Marathon/data-marathon-infinity
+[submodule "SDL2/src/main/cpp/SDL"]
+	path = SDL2/src/main/cpp/SDL
+	url = git@github.com:libsdl-org/SDL.git

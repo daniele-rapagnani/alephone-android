@@ -8,6 +8,11 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.0"
     defaultConfig {
+        aaptOptions {
+            noCompress ''
+            ignoreAssetsPattern 'HD Monsters:HD Textures:HD Weapons:Enhanced HUD:TTEP v7'
+        }
+
         applicationId "com.marathon.alephone"
         minSdkVersion 21
         targetSdkVersion 29
@@ -45,7 +50,7 @@ android {
     externalNativeBuild {
         cmake {
             path "src/main/cpp/CMakeLists.txt"
-            version "3.14.4"
+            version "3.14.4+"
         }
     }
     
@@ -98,7 +103,6 @@ dependencies {
     implementation project(':SDL_mixer')
     implementation project(':SDL_ttf')
     implementation project(':SDL_net')
-    implementation project(':hidapi')
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

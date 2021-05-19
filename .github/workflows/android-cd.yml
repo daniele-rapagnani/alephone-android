@@ -40,7 +40,7 @@ jobs:
     # See: https://github.com/android/ndk/issues/929
 
     - name: Apply NDK sysroot patch
-      run: sudo cp "${{ github.workspace }}/patched-default-build-commands.mk" "${ANDROID_SDK_ROOT}/ndk-bundle/build/core/default-build-commands.mk"
+      run: sudo cp "${{ github.workspace }}/.github/patched-default-build-commands.mk" "${ANDROID_SDK_ROOT}/ndk-bundle/build/core/default-build-commands.mk"
 
     - name: Build with Gradle
       run: ./gradlew assembleRelease

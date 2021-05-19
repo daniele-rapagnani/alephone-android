@@ -85,7 +85,7 @@ task bakeAssetsList {
         listFile << paths.size() << "\n"
 
         paths.each { File file ->
-            listFile << file.getPath().replace(assetsDir.getAbsolutePath() + "/", "") << "\n"
+            listFile << file.getPath().replace(assetsDir.getAbsolutePath() + "/", "./") << "\n"
             listFile << (file.isDirectory() ? "D" : "F") << " "
             listFile << file.length() << "\n"
         }

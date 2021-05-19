@@ -10,7 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:replace="android:theme">
+        tools:replace="android:theme"
+        android:requestLegacyExternalStorage="true">
 
         <activity
             android:name="com.marathon.alephone.MainActivity"
@@ -32,4 +33,7 @@
         </activity>
 
     </application>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 </manifest>

@@ -29,6 +29,9 @@ jobs:
       with:
         java-version: 1.8
 
+    - name: Uninstall CMake 3.18
+      run: echo "y" | sudo ${ANDROID_HOME}/tools/bin/sdkmanager --uninstall "cmake;3.18.1" --sdk_root=${ANDROID_SDK_ROOT}
+
     - name: Installs CMake
       uses: Symbitic/install-cmake@v0.1.0
       with:
@@ -36,11 +39,8 @@ jobs:
 
     # See: https://github.com/android/ndk/issues/929
 
-    - name: Download NDK sysroot patch
-      run: curl "https://android-review.googlesource.com/changes/platform%2Fndk~1318770/revisions/1/patch?zip" > /tmp/ndkfix.zip && unzip -d /tmp/ /tmp/ndkfix.zip
     - name: Apply NDK sysroot patch
-      run: cd "${ANDROID_SDK_ROOT}/ndk-bundle" && sudo patch -t -p1 < /tmp/f563d92.diff
-      continue-on-error: true
+      run: sudo cp "${{ github.workspace }}/.github/patched.android.toolchain.cmake" "${ANDROID_SDK_ROOT}/ndk-bundle/build/cmake/android.toolchain.cmake"
 
     - name: Build with Gradle
       run: ./gradlew assembleRelease

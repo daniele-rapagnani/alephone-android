@@ -43,7 +43,7 @@ jobs:
       run: sudo cp "${{ github.workspace }}/.github/patched.android.toolchain.cmake" "${ANDROID_SDK_ROOT}/ndk-bundle/build/cmake/android.toolchain.cmake"
 
     - name: Build with Gradle
-      run: ./gradlew assembleRelease
+      run: ./gradlew app:assembleRelease
 
     - name: Sign Marathon 2 APKs
       id: sign_marathon2

@@ -1,8 +1,10 @@
 package com.marathon.alephone;
 
+import android.app.ActionBar;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.View;
 
 import org.libsdl.app.SDLActivity;
 
@@ -19,66 +21,39 @@ public class MainActivity extends SDLActivity {
     public static native void setAssetManager(AssetManager mgr);
     public static native void setScenarioPath(String path);
 
-    protected void updateScenarioPath()
-    {
-        File extPath = Environment.getExternalStorageDirectory();
-
-        if (!extPath.canRead())
-        {
-            return;
-        }
-
-        File scenarioSpec = new File(extPath, "AlephOneScenario.txt");
-
-        if (!scenarioSpec.canRead())
-        {
-            return;
-        }
-
-        try {
-            FileInputStream fis = new FileInputStream(scenarioSpec);
-
-            byte[] data = new byte[(int)scenarioSpec.length()];
-            fis.read(data);
-            fis.close();
-
-            String path = new String(data, "UTF-8").trim();
-
-            if (path.startsWith("#"))
-            {
-                return;
-            }
-
-            File scenarioPath = new File(path);
-
-            if (scenarioPath.canRead() && scenarioPath.isDirectory())
-            {
-                setScenarioPath(path);
-            }
-        } catch (FileNotFoundException e) {
-            return;
-        } catch (IOException e) {
-            return;
-        }
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        View decorView = getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
+        
+        ActionBar actionBar = getActionBar();
+
+        if (actionBar != null) {
+            actionBar.hide();
+        }
+
         this.am = getResources().getAssets();
         setAssetManager(am);
-        updateScenarioPath();
+
+        Bundle b = getIntent().getExtras();
+
+        if (b != null && b.getString("scenarioPath") != null) {
+            setScenarioPath(b.getString("scenarioPath"));
+        }
     }
 
     @Override
     protected String[] getLibraries() {
         return new String[] {
-                "SDL2",
-                "SDL2_image",
-                "SDL2_mixer",
-                "SDL2_net",
-                "SDL2_ttf",
-                "main"
+            "SDL2",
+            "SDL2_image",
+            "SDL2_mixer",
+            "SDL2_net",
+            "SDL2_ttf",
+            "main"
         };
     }
 }

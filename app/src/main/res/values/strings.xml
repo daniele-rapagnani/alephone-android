@@ -1,3 +1,6 @@
 <resources>
-    <string name="app_name">AlephOne</string>
+    <string name="app_name">Aleph One</string>
+    <string name="data_item_text">Unknown scenario</string>
+    <string name="add_folder">Add scenario</string>
+    <string name="run_scenario">Run</string>
 </resources>

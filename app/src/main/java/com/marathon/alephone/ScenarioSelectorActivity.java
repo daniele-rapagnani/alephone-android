@@ -33,6 +33,7 @@ import com.marathon.alephone.scenario.ScenarioUninstaller;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -46,11 +47,13 @@ public class ScenarioSelectorActivity
     implements ScenarioDownloader.IScenarioDownloaderListener
 {
     private final static int ADD_SCENARIO_RC = 1;
-    private final static int EXPORT_SCENARIO_DATA_RC = 1000;
+    private final static int EXPORT_SCENARIO_DATA_RC = 2;
+    private final static int IMPORT_SCENARIO_DATA_RC = 3;
 
     private final static int INSTALL_NOT_ID = 1;
     private final static int UNINSTALL_NOT_ID = 2;
     private final static int EXPORT_DATA_NOT_ID = 3;
+    private final static int IMPORT_DATA_NOT_ID = 4;
 
     private final static String SCENARIOSEL_PREFS = "scenariosel";
     private final static String SCENARIO_DOWNLOAD_SHOWN_KEY = "scenario_download_shown";
@@ -63,7 +66,9 @@ public class ScenarioSelectorActivity
     private NotificationsManager notificationsManager;
     private ScenarioDownloader scenarioDownloader;
     private List<Uri> deleteAfterInstall = new LinkedList<>();
-    private List<ScenarioEntry> exportDataScenarios = new ArrayList<>();
+
+    private ScenarioEntry exportDataScenario = null;
+    private ScenarioEntry importDataScenario = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -190,21 +195,17 @@ public class ScenarioSelectorActivity
             return;
         }
 
-        if (requestCode >= EXPORT_SCENARIO_DATA_RC) {
-            int id = requestCode - EXPORT_SCENARIO_DATA_RC;
-
-            if (id < this.exportDataScenarios.size()) {
-                ScenarioEntry se = this.exportDataScenarios.get(id);
-                this.exportDataScenarios.remove(id);
-                onScenarioExportFileSelected(data, se);
-            }
-
-            return;
-        }
-
         switch(requestCode) {
             case ADD_SCENARIO_RC:
                 onScenarioFileSelected(data);
+                return;
+
+            case EXPORT_SCENARIO_DATA_RC:
+                onScenarioExportFileSelected(data, this.exportDataScenario);
+                return;
+
+            case IMPORT_SCENARIO_DATA_RC:
+                onScenarioImportFileSelected(data, this.importDataScenario);
                 return;
         }
     }
@@ -410,6 +411,7 @@ public class ScenarioSelectorActivity
                     @Override
                     public void onExportSuccess(Uri dst, ScenarioEntry scenario) {
                         prog.close();
+                        exportDataScenario = null;
 
                         AlertUtils.showInfo(
                             ScenarioSelectorActivity.this,
@@ -421,6 +423,7 @@ public class ScenarioSelectorActivity
                     @Override
                     public void onExportError(ScenarioEntry scenario, String error) {
                         prog.close();
+                        exportDataScenario = null;
 
                         AlertUtils.showError(
                             ScenarioSelectorActivity.this,
@@ -434,6 +437,10 @@ public class ScenarioSelectorActivity
     }
 
     public void onExportScenarioData(ScenarioEntry s) {
+        if (this.exportDataScenario != null) {
+            return;
+        }
+
         Date now = Calendar.getInstance().getTime();
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-mm-dd-hh-mm-ss");
 
@@ -444,10 +451,119 @@ public class ScenarioSelectorActivity
             Intent.EXTRA_TITLE,
             String.format("%s_backup_%s.zip", s.scenarioName, sf.format(now))
         );
-        intent.putExtra("com.alephone.scenario_entry", s.scenarioName);
 
-        exportDataScenarios.add(s);
-        startActivityForResult(intent, EXPORT_SCENARIO_DATA_RC + exportDataScenarios.size() - 1);
+        this.exportDataScenario = s;
+        startActivityForResult(intent, EXPORT_SCENARIO_DATA_RC);
+    }
+
+    public void onScenarioImportFileSelected(final Intent data, final ScenarioEntry se) {
+        ScenarioExporter.Manifest manifest =
+            ScenarioExporter.readManifest(data.getData(), this)
+        ;
+
+        if (manifest == null) {
+            AlertUtils.showError(
+                this,
+                "Import error",
+                "The file you select is not valid scenario data"
+            );
+
+            this.importDataScenario = null;
+
+            return;
+        }
+
+        if (!manifest.scenario.equals(se.scenarioName)) {
+            AlertUtils.showError(
+                    this,
+                    "Import error",
+                    String.format(
+                        "The file you selected is for '%s', it can't be imported in '%s'",
+                        manifest.scenario,
+                        se.scenarioName
+                    )
+            );
+
+            this.importDataScenario = null;
+
+            return;
+        }
+
+        this.installExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                ScenarioInstaller di = new ScenarioInstaller(
+                    data.getData(),
+                    ScenarioSelectorActivity.this
+                );
+
+                final NotificationsManager.ProgressNotification progNot =
+                    notificationsManager.createProgressNotification(
+                        IMPORT_DATA_NOT_ID,
+                        "Importing",
+                        "Importing scenario data",
+                        android.R.drawable.ic_popup_sync
+                    )
+                ;
+
+                progNot.showIndeterminate();
+
+                di.installData(
+                    new IScenarioInstallListener() {
+                        @Override
+                        public void onDataInstallStarted(File location, int totalSteps, String hash) {
+                            progNot.showWithProgress(0, totalSteps);
+                        }
+
+                        @Override
+                        public void onDataInstallProgress(int stepDone, int totalSteps) {
+                            progNot.showWithProgress(stepDone, totalSteps);
+                        }
+
+                        @Override
+                        public void onDataInstallDone(File location, long size, String hash) {
+                            progNot.close();
+
+                            ScenarioSelectorActivity.this.importDataScenario = null;
+
+                            AlertUtils.showInfo(
+                                ScenarioSelectorActivity.this,
+                                "Import succeeded",
+                                "Data imported correctly"
+                            );
+                        }
+
+                        @Override
+                        public void onDataInstallError(String error) {
+                            progNot.close();
+
+                            ScenarioSelectorActivity.this.importDataScenario = null;
+
+                            AlertUtils.showError(
+                                ScenarioSelectorActivity.this,
+                                "Import error",
+                                error
+                            );
+                        }
+                    },
+                    new File(se.rootPath),
+                    se.packageHash,
+                    Arrays.asList(ScenarioExporter.MANIFEST_NAME)
+                );
+            }
+        });
+    }
+
+    public void onImportScenarioData(ScenarioEntry s) {
+        if (this.importDataScenario != null) {
+            return;
+        }
+
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.setType("application/zip");
+
+        this.importDataScenario = s;
+        startActivityForResult(intent, IMPORT_SCENARIO_DATA_RC);
     }
 
     @Override

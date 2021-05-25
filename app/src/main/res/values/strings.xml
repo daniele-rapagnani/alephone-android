@@ -40,4 +40,5 @@
     <string name="rubiconx_url">http://files5.bungie.org/marathon/marathonRubiconX.zip</string>
     <string name="phoenix_url">http://simplici7y.com/version/file/998/Marathon_Phoenix_1.3.zip</string>
     <string name="export_scenario_data">Export data</string>
+    <string name="import_scenario_data">Import data</string>
 </resources>

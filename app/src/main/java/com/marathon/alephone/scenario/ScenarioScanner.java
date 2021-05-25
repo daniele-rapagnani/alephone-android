@@ -12,6 +12,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
@@ -29,17 +30,7 @@ public class ScenarioScanner {
             return null;
         }
 
-        File mmlDir = new File(root, "MML");
-        File scriptsDir = new File(root, "Scripts");
-        String scenarioName = null;
-
-        if (mmlDir.exists()) {
-            scenarioName = findScenarioName(mmlDir);
-        }
-
-        if (scenarioName == null && scriptsDir.exists()) {
-            scenarioName = findScenarioName(scriptsDir);
-        }
+        String scenarioName = findScenarioName(root);
 
         if (scenarioName == null) {
             return null;
@@ -53,7 +44,11 @@ public class ScenarioScanner {
         return de;
     }
 
-    private File findRoot(File start) {
+    public File findRoot() {
+        return findRoot(null);
+    }
+
+    public File findRoot(File start) {
         if (start == null) {
             start = this.path;
         }
@@ -84,7 +79,40 @@ public class ScenarioScanner {
         return null;
     }
 
-    private String findScenarioName(File dir) {
+    public Node findXPath(String xpath) {
+        return findXPath(null, xpath);
+    }
+
+    public Node findXPath(File root, String xpath) {
+        if (root == null) {
+            root = this.path;
+        }
+
+        XPath xp = XPathFactory.newInstance().newXPath();
+        XPathExpression xpe = null;
+
+        try {
+            xpe = xp.compile(xpath);
+        } catch (XPathExpressionException e) {
+            return null;
+        }
+
+        File mmlDir = new File(root, "MML");
+        File scriptsDir = new File(root, "Scripts");
+        Node value = null;
+
+        if (mmlDir.exists()) {
+            value = findXPathAt(mmlDir, xpe);
+        }
+
+        if (value == null && scriptsDir.exists()) {
+            value = findXPathAt(scriptsDir, xpe);
+        }
+
+        return value;
+    }
+
+    private Node findXPathAt(File dir, XPathExpression xpath) {
         File[] files = dir.listFiles();
 
         for (File f : files) {
@@ -102,16 +130,11 @@ public class ScenarioScanner {
                 continue;
             }
 
-            XPath xp = XPathFactory.newInstance().newXPath();
             try {
-                Node n = (Node)xp.compile("/marathon/scenario").evaluate(d, XPathConstants.NODE);
+                Node n = (Node)xpath.evaluate(d, XPathConstants.NODE);
 
                 if (n != null) {
-                    Node name = n.getAttributes().getNamedItem("name");
-
-                    if (name != null) {
-                        return name.getNodeValue();
-                    }
+                    return n;
                 }
             } catch (XPathExpressionException e) {
                 e.printStackTrace();
@@ -120,6 +143,22 @@ public class ScenarioScanner {
         }
 
         return null;
+    }
+
+    public String findScenarioName(File dir) {
+        Node scenarioName = findXPath(dir, "/marathon/scenario");
+
+        if (scenarioName == null) {
+            return null;
+        }
+
+        Node scenarioNameAtt = scenarioName.getAttributes().getNamedItem("name");
+
+        if (scenarioNameAtt == null) {
+            return null;
+        }
+
+        return scenarioNameAtt.getNodeValue();
     }
 
     public Document parseMML(File mmlFile) {

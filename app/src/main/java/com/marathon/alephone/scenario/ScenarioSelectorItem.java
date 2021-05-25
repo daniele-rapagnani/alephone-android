@@ -104,6 +104,10 @@ public class ScenarioSelectorItem extends RecyclerView.ViewHolder {
                                 activity.onExportScenarioData(de);
                                 return true;
 
+                            case R.id.import_data:
+                                activity.onImportScenarioData(de);
+                                return true;
+
                             default:
                                 return false;
                         }

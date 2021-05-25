@@ -11,6 +11,8 @@ import java.io.InputStream;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -26,10 +28,31 @@ public class ScenarioInstaller {
     public void install(IScenarioInstallListener listener) {
         long size = 0;
 
+        String md5 = null;
+
+        try {
+            md5 = getMD5();
+        } catch (IOException e) {
+            listener.onDataInstallError(e.getLocalizedMessage());
+            return;
+        }
+
+        File filesDir = new File(context.getFilesDir(), md5);
+        installData(listener, filesDir, md5, null);
+    }
+
+    public void installData(
+        IScenarioInstallListener listener,
+        File filesDir,
+        String md5,
+        List<String> excludeFiles
+    ) {
+        long size = 0;
+
+        excludeFiles = excludeFiles != null ? excludeFiles : new ArrayList<String>();
+
         try {
             int totalCount = getEntriesCount();
-            String md5 = getMD5();
-
             InputStream is = context.getContentResolver().openInputStream(this.source);
 
             if (is == null) {
@@ -38,7 +61,6 @@ public class ScenarioInstaller {
             }
 
             ZipInputStream zis = new ZipInputStream(new BufferedInputStream(is));
-            File filesDir = new File(context.getFilesDir(), md5);
 
             ZipEntry ze;
             byte[] buffer = new byte[1024];
@@ -50,34 +72,44 @@ public class ScenarioInstaller {
             while ((ze = zis.getNextEntry()) != null)
             {
                 String filename = ze.getName();
+                boolean skip = false;
 
-                if (ze.isDirectory()) {
-                    File fmd = new File(filesDir, filename);
+                for (String s : excludeFiles) {
+                    if (s.equals(filename)) {
+                        skip = true;
+                        break;
+                    }
+                }
 
-                    if (!fmd.exists() && !fmd.mkdirs()) {
-                        listener.onDataInstallError(
-                            String.format("Can't create directory: %s", fmd.getAbsolutePath())
-                        );
+                if (!skip) {
+                    if (ze.isDirectory()) {
+                        File fmd = new File(filesDir, filename);
 
-                        return;
+                        if (!fmd.exists() && !fmd.mkdirs()) {
+                            listener.onDataInstallError(
+                                    String.format("Can't create directory: %s", fmd.getAbsolutePath())
+                            );
+
+                            return;
+                        }
+
+                        listener.onDataInstallProgress(++processedCount, totalCount);
+                        continue;
                     }
 
-                    listener.onDataInstallProgress(++processedCount, totalCount);
-                    continue;
+                    File fo = new File(filesDir, filename);
+                    FileOutputStream fouts = new FileOutputStream(fo);
+
+                    while ((count = zis.read(buffer)) != -1)
+                    {
+                        fouts.write(buffer, 0, count);
+                        size += count;
+                    }
+
+                    fouts.close();
                 }
 
-                File fo = new File(filesDir, filename);
-                FileOutputStream fouts = new FileOutputStream(fo);
-
-                while ((count = zis.read(buffer)) != -1)
-                {
-                    fouts.write(buffer, 0, count);
-                    size += count;
-                }
-
-                fouts.close();
                 zis.closeEntry();
-
                 listener.onDataInstallProgress(++processedCount, totalCount);
             }
 

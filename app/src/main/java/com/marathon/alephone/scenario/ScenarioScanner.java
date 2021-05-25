@@ -1,4 +1,4 @@
-package com.marathon.alephone;
+package com.marathon.alephone.scenario;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -15,14 +15,14 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-public class DataScanner {
+public class ScenarioScanner {
     private final File path;
 
-    DataScanner(File path) {
+    public ScenarioScanner(File path) {
         this.path = path;
     }
 
-    public DataEntry scan() {
+    public ScenarioEntry scan() {
         File root = findRoot(null);
 
         if (root == null) {
@@ -45,15 +45,15 @@ public class DataScanner {
             return null;
         }
 
-        DataEntry de = new DataEntry();
-        de.path = root.getAbsolutePath();
+        ScenarioEntry de = new ScenarioEntry();
+        de.rootPath = root.getAbsolutePath();
+        de.path = this.path.getAbsolutePath();
         de.scenarioName = scenarioName;
 
         return de;
     }
 
-    private File findRoot(File start)
-    {
+    private File findRoot(File start) {
         if (start == null) {
             start = this.path;
         }
@@ -84,41 +84,45 @@ public class DataScanner {
         return null;
     }
 
-    private String findScenarioName(File dir)
-    {
+    private String findScenarioName(File dir) {
         File[] files = dir.listFiles();
 
         for (File f : files) {
-            if (f.getName().toLowerCase().endsWith(".mml")) {
-                Document d = parseMML(f);
+            if (f.getName().toLowerCase().endsWith(".lua")) {
+                continue;
+            }
 
-                if (d == null) {
-                    continue;
-                }
+            if (f.isDirectory()) {
+                continue;
+            }
 
-                XPath xp = XPathFactory.newInstance().newXPath();
-                try {
-                    Node n = (Node)xp.compile("/marathon/scenario").evaluate(d, XPathConstants.NODE);
+            Document d = parseMML(f);
 
-                    if (n != null) {
-                        Node name = n.getAttributes().getNamedItem("name");
+            if (d == null) {
+                continue;
+            }
 
-                        if (name != null) {
-                            return name.getNodeValue();
-                        }
+            XPath xp = XPathFactory.newInstance().newXPath();
+            try {
+                Node n = (Node)xp.compile("/marathon/scenario").evaluate(d, XPathConstants.NODE);
+
+                if (n != null) {
+                    Node name = n.getAttributes().getNamedItem("name");
+
+                    if (name != null) {
+                        return name.getNodeValue();
                     }
-                } catch (XPathExpressionException e) {
-                    e.printStackTrace();
-                    continue;
                 }
+            } catch (XPathExpressionException e) {
+                e.printStackTrace();
+                continue;
             }
         }
 
         return null;
     }
 
-    public Document parseMML(File mmlFile)
-    {
+    public Document parseMML(File mmlFile) {
         DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
 
         try {

@@ -3,4 +3,41 @@
     <string name="data_item_text">Unknown scenario</string>
     <string name="add_folder">Add scenario</string>
     <string name="run_scenario">Run</string>
+    <string name="delete_scenario">Uninstall</string>
+    <string name="last_played_label">Last played:</string>
+    <string name="size_label">Size:</string>
+    <string name="download_scenario">Download scenario</string>
+
+    <string name="scenario_already_installed_title">Nothing to do</string>
+    <string name="scenario_already_installed_text">Nothing to do</string>
+
+    <string name="scenario_install_notification_title">Installing</string>
+    <string name="scenario_install_notification_text">Installing Aleph One scenario...</string>
+
+    <string name="scenario_uninstall_notification_title">Uninstalling</string>
+    <string name="scenario_uninstall_notification_text">Uninstalling \"%s\"</string>
+    <string name="scenario_uninstall_error_title">Error uninstalling</string>
+
+    <string name="scenario_uninstall_alert_title">Delete scenario?</string>
+    <string name="scenario_uninstall_alert_text">Do you really want to delete this scenario?\nAll saves will be deleted too.</string>
+
+    <string name="scenario_download_error_title">Scenario download error</string>
+    <string name="scenario_download_error_text">Error downloading scenario: %s</string>
+
+    <string name="scenario_download_title">Download started</string>
+    <string name="scenario_download_text">Check your notifications to see the download\'s progress.</string>
+    <string name="scenario_add_title">Install started</string>
+    <string name="scenario_add_text">Check your notifications to see the install\'s progress.</string>
+    <string name="scenario_download_choose">Choose a scenario to download from the list</string>
+
+    <string name="marathon_url">https://github.com/Aleph-One-Marathon/alephone/releases/download/release-20210408/Marathon-20210408-Data.zip</string>
+    <string name="marathon2_url">https://github.com/Aleph-One-Marathon/alephone/releases/download/release-20210408/Marathon2-20210408-Data.zip</string>
+    <string name="marathoninf_url">https://github.com/Aleph-One-Marathon/alephone/releases/download/release-20210408/MarathonInfinity-20210408-Data.zip</string>
+    <string name="evil_url">http://files3.bungie.org/trilogy/MarathonEvil.zip</string>
+    <string name="red_url">http://files3.bungie.org/trilogy/MarathonRED.zip</string>
+    <string name="tempusirae_url">http://nardofiles.bungie.org/Tempus_Irae.zip</string>
+    <string name="eternal_url">http://eternal.bungie.org/files/_releases/EternalXv120.zip</string>
+    <string name="rubiconx_url">http://files5.bungie.org/marathon/marathonRubiconX.zip</string>
+    <string name="phoenix_url">http://simplici7y.com/version/file/998/Marathon_Phoenix_1.3.zip</string>
+    <string name="export_scenario_data">Export data</string>
 </resources>

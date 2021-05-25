@@ -2,7 +2,10 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/add_folder"
+        android:id="@+id/download_scenario"
+        android:title="@string/download_scenario" />
+    <item
+        android:id="@+id/add_scenario"
         android:icon="@android:drawable/ic_menu_add"
         android:title="@string/add_folder" />
 </menu>

@@ -15,7 +15,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Path;
 
-public class MainActivity extends SDLActivity {
+public class AlephOneActivity extends SDLActivity {
     private AssetManager am = null;
 
     public static native void setAssetManager(AssetManager mgr);
@@ -28,7 +28,7 @@ public class MainActivity extends SDLActivity {
         View decorView = getWindow().getDecorView();
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
-        
+
         ActionBar actionBar = getActionBar();
 
         if (actionBar != null) {

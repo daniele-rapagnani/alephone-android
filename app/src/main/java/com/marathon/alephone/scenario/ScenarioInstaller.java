@@ -1,4 +1,4 @@
-package com.marathon.alephone;
+package com.marathon.alephone.scenario;
 
 import android.content.Context;
 import android.net.Uri;
@@ -14,16 +14,18 @@ import java.security.NoSuchAlgorithmException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-public class DataInstaller {
+public class ScenarioInstaller {
     private final Uri source;
     private final Context context;
 
-    DataInstaller(Uri source, Context context) {
+    public ScenarioInstaller(Uri source, Context context) {
         this.source = source;
         this.context = context;
     }
 
-    public void install(IDataInstallListener listener) {
+    public void install(IScenarioInstallListener listener) {
+        long size = 0;
+
         try {
             int totalCount = getEntriesCount();
             String md5 = getMD5();
@@ -70,6 +72,7 @@ public class DataInstaller {
                 while ((count = zis.read(buffer)) != -1)
                 {
                     fouts.write(buffer, 0, count);
+                    size += count;
                 }
 
                 fouts.close();
@@ -79,7 +82,7 @@ public class DataInstaller {
             }
 
             zis.close();
-            listener.onDataInstallDone(filesDir, md5);
+            listener.onDataInstallDone(filesDir, size, md5);
         } catch (Exception e) {
             listener.onDataInstallError(e.getLocalizedMessage());
         }

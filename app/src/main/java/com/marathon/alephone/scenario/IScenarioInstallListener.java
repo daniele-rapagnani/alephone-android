@@ -1,10 +1,10 @@
-package com.marathon.alephone;
+package com.marathon.alephone.scenario;
 
 import java.io.File;
 
-public interface IDataInstallListener {
+public interface IScenarioInstallListener {
     void onDataInstallStarted(File location, int totalSteps, String hash);
     void onDataInstallProgress(int stepDone, int totalSteps);
-    void onDataInstallDone(File location, String hash);
+    void onDataInstallDone(File location, long size, String hash);
     void onDataInstallError(String error);
 }

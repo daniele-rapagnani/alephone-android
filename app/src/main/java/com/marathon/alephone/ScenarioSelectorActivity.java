@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -163,12 +164,17 @@ public class ScenarioSelectorActivity
                         public void success(String choice) {
                             scenarioDownloader.startScenarioDownload(choice, ScenarioSelectorActivity.this);
 
-                            AlertUtils.showOnetimeInfo(
+                            if (!AlertUtils.showOnetimeInfo(
                                 SCENARIO_DOWNLOAD_SHOWN_KEY,
                                 ScenarioSelectorActivity.this,
                                 getString(R.string.scenario_download_title),
                                 getString(R.string.scenario_download_text)
-                            );
+                            )) {
+                                AlertUtils.showToast(
+                                    ScenarioSelectorActivity.this,
+                                    getString(R.string.toast_scenario_download)
+                                );
+                            }
                         }
 
                         @Override
@@ -189,6 +195,8 @@ public class ScenarioSelectorActivity
                 return;
             }
         }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     public void onPlayScenario(final ScenarioEntry de) {
@@ -211,6 +219,11 @@ public class ScenarioSelectorActivity
                     installExecutor.execute(new Runnable() {
                         @Override
                         public void run() {
+                            AlertUtils.showToast(
+                                ScenarioSelectorActivity.this,
+                                getString(R.string.toast_scenario_uninstall)
+                            );
+
                             ScenarioUninstaller su = new ScenarioUninstaller(de);
 
                             final NotificationsManager.ProgressNotification pm =

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 
 public class ScenarioDownloader {
     public interface IScenarioDownloaderListener {
@@ -23,7 +24,7 @@ public class ScenarioDownloader {
         void onScenarioDownloadError(String error);
     };
 
-    private static HashMap<String, Integer> URLS = new HashMap<>();
+    private static HashMap<String, Integer> URLS = new LinkedHashMap<>();
 
     private HashMap<Long, IScenarioDownloaderListener> runningDownloads = new LinkedHashMap<>();
     private final Activity activity;
@@ -49,8 +50,8 @@ public class ScenarioDownloader {
         );
     }
 
-    public List<String> getSupportedScenarios() {
-        return new ArrayList<>(URLS.keySet());
+    public Set<String> getSupportedScenarios() {
+        return URLS.keySet();
     }
 
     public boolean startScenarioDownload(String name, IScenarioDownloaderListener listener) {
@@ -68,7 +69,7 @@ public class ScenarioDownloader {
 
         Uri downloadUri = Uri.parse(this.activity.getString(URLS.get(name)));
         DownloadManager.Request req = new DownloadManager.Request(downloadUri);
-        req.setTitle(String.format("Downloading scenario %s", name));
+        req.setTitle(String.format(this.activity.getString(R.string.scenario_file_download_title), name));
         req.setMimeType("application/zip");
         req.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
         req.setDestinationInExternalFilesDir(this.activity, null, String.format("%s.zip", name));
@@ -112,7 +113,7 @@ public class ScenarioDownloader {
                             break;
 
                         default:
-                            listener.onScenarioDownloadError("Failed for unknown reasons");
+                            listener.onScenarioDownloadError(ScenarioDownloader.this.activity.getString(R.string.generic_error));
                             break;
                     }
                 }

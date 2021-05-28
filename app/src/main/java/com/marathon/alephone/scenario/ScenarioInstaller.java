@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 
 import com.marathon.alephone.IInstallListener;
+import com.marathon.alephone.R;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -49,7 +50,7 @@ public class ScenarioInstaller {
         }
 
         File filesDir = new File(context.getFilesDir(), md5);
-        installData(listener, filesDir, md5, null);
+        installData(listener, filesDir, md5, null, true);
 
         if (deleteAfterInstall) {
             this.context.getContentResolver().delete(this.source, null, null);
@@ -60,18 +61,19 @@ public class ScenarioInstaller {
         IInstallListener listener,
         File filesDir,
         String md5,
-        List<String> excludeFiles
+        List<String> excludeFiles,
+        boolean validate
     ) {
         long size = 0;
 
         excludeFiles = excludeFiles != null ? excludeFiles : new ArrayList<String>();
 
         try {
-            int totalCount = validateScenario();
+            int totalCount = getItemsCount(validate);
             InputStream is = context.getContentResolver().openInputStream(this.source);
 
             if (is == null) {
-                listener.onDataInstallError("Can't open selected file");
+                listener.onDataInstallError(context.getString(R.string.scenario_installer_error_open));
                 return;
             }
 
@@ -101,7 +103,10 @@ public class ScenarioInstaller {
 
                         if (!fmd.exists() && !fmd.mkdirs()) {
                             listener.onDataInstallError(
-                                    String.format("Can't create directory: %s", fmd.getAbsolutePath())
+                                String.format(
+                                    context.getString(R.string.scenario_installer_error_mkdir),
+                                    fmd.getAbsolutePath()
+                                )
                             );
 
                             return;
@@ -112,6 +117,18 @@ public class ScenarioInstaller {
                     }
 
                     File fo = new File(filesDir, filename);
+
+                    if (fo.getParentFile() != null && !fo.getParentFile().exists()) {
+                        if (!fo.getParentFile().mkdirs()) {
+                            listener.onDataInstallError(
+                                    String.format(
+                                            context.getString(R.string.scenario_installer_error_mkdir),
+                                            fo.getParentFile().getAbsolutePath()
+                                    )
+                            );
+                        }
+                    }
+
                     FileOutputStream fouts = new FileOutputStream(fo);
 
                     while ((count = zis.read(buffer)) != -1) {
@@ -163,19 +180,19 @@ public class ScenarioInstaller {
         }
     }
 
-    private int validateScenario() throws IOException, ScenarioException {
+    private int getItemsCount(boolean validate) throws IOException, ScenarioException {
         InputStream is = getInputStream();
 
         ZipInputStream zis = new ZipInputStream(is);
         int count = 0;
-        boolean valid = false;
+        boolean valid = !validate;
         ZipEntry entry = null;
 
         while ((entry = zis.getNextEntry()) != null) {
             File f = new File(entry.getName());
             String name = FilenameUtils.getName(f.getParent());
 
-            if (name != null && (name.equals("MML") || name.equals("Scripts"))) {
+            if (!valid && name != null && (name.equals("MML") || name.equals("Scripts"))) {
                 valid = true;
             }
 

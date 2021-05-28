@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.net.Uri;
 
 import com.marathon.alephone.IInstallListener;
+import com.marathon.alephone.R;
 import com.marathon.alephone.scenario.ScenarioEntry;
 
 import org.apache.commons.io.FilenameUtils;
@@ -35,7 +36,7 @@ public class PluginsInstaller {
         List<Plugin> plugins = scanner.scan(file);
 
         if (plugins == null || plugins.isEmpty()) {
-            listener.onPluginsInstallError("Can't find any plugin to install");
+            listener.onPluginsInstallError(this.activity.getString(R.string.no_plugins_install_error));
             return;
         }
 
@@ -46,7 +47,9 @@ public class PluginsInstaller {
 
             if (!pluginsDir.exists()) {
                 if (!pluginsDir.mkdir()) {
-                    listener.onPluginsInstallError("Can't create Plugins directory");
+                    listener.onPluginsInstallError(
+                        this.activity.getString(R.string.plugins_install_error_mkdir_failed)
+                    );
                     return;
                 }
             }
@@ -66,7 +69,11 @@ public class PluginsInstaller {
 
                         if (ze.isDirectory()) {
                             if (!fo.exists() && !fo.mkdirs()) {
-                                listener.onPluginsInstallError("Can't create directory: " + fo.getAbsolutePath());
+                                listener.onPluginsInstallError(
+                                    this.activity.getString(R.string.plugins_install_error_mkdir_file_failed)
+                                    + fo.getAbsolutePath()
+                                );
+
                                 return;
                             }
 

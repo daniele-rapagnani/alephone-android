@@ -29,4 +29,4 @@ jobs:
     - name: Uninstall CMake 3.18
       run: echo "y" | sudo ${ANDROID_HOME}/tools/bin/sdkmanager --uninstall "cmake;3.18.1" --sdk_root=${ANDROID_SDK_ROOT}
     - name: Build with Gradle
-      run: ./gradlew assembleMarathon2Release
+      run: ./gradlew assembleRelease

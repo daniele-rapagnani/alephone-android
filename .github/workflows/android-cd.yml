@@ -45,29 +45,11 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew app:assembleRelease
 
-    - name: Sign Marathon 2 APKs
-      id: sign_marathon2
+    - name: Sign Aleph One APKs
+      id: sign_alephone
       uses: r0adkll/sign-android-release@v1
       with:
-        releaseDirectory: app/build/outputs/apk/marathon2/release
-        signingKeyBase64: ${{ secrets.SIGNING_KEY }}
-        alias: ${{ secrets.ALIAS }}
-        keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
-        keyPassword: ${{ secrets.KEY_PASSWORD }}
-    - name: Sign Marathon APKs
-      id: sign_marathon
-      uses: r0adkll/sign-android-release@v1
-      with:
-        releaseDirectory: app/build/outputs/apk/marathon/release
-        signingKeyBase64: ${{ secrets.SIGNING_KEY }}
-        alias: ${{ secrets.ALIAS }}
-        keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
-        keyPassword: ${{ secrets.KEY_PASSWORD }}
-    - name: Sign Marathon Infinity APKs
-      id: sign_marathon_inf
-      uses: r0adkll/sign-android-release@v1
-      with:
-        releaseDirectory: app/build/outputs/apk/marathonInfinity/release
+        releaseDirectory: app/build/outputs/apk/release
         signingKeyBase64: ${{ secrets.SIGNING_KEY }}
         alias: ${{ secrets.ALIAS }}
         keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
@@ -85,33 +67,13 @@ jobs:
         draft: true
         prerelease: true
 
-    - name: Upload Marathon
-      id: upload-marathon
+    - name: Upload Aleph One
+      id: upload_alephone
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ${{ steps.sign_marathon.outputs.signedReleaseFile }}
-        asset_name: marathon-signed.apk
-        asset_content_type: application/vnd.android.package-archive
-    - name: Upload Marathon 2
-      id: upload-marathon2
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ${{ steps.sign_marathon2.outputs.signedReleaseFile }}
-        asset_name: marathon2-signed.apk
-        asset_content_type: application/vnd.android.package-archive
-    - name: Upload Marathon Infinity
-      id: upload-marathonInf
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ${{ steps.sign_marathon_inf.outputs.signedReleaseFile }}
-        asset_name: marathon-inf-signed.apk
+        asset_path: ${{ steps.sign_alephone.outputs.signedReleaseFile }}
+        asset_name: alephone-signed.apk
         asset_content_type: application/vnd.android.package-archive

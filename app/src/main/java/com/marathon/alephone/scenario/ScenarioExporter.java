@@ -3,6 +3,8 @@ package com.marathon.alephone.scenario;
 import android.content.Context;
 import android.net.Uri;
 
+import com.marathon.alephone.R;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Node;
@@ -97,7 +99,11 @@ public class ScenarioExporter {
         List<File> files = getFilesToExport();
 
         if (files.isEmpty()) {
-            listener.onExportError(this.scenario, "Nothing to export");
+            listener.onExportError(
+                this.scenario,
+                this.context.getString(R.string.scenario_data_export_error_nothing)
+            );
+
             return;
         }
 

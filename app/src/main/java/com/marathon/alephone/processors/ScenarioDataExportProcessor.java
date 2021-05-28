@@ -3,6 +3,7 @@ package com.marathon.alephone.processors;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -67,6 +68,11 @@ public class ScenarioDataExportProcessor extends SAFFileLongProcessor {
         if (requestData == null) {
             return;
         }
+
+        AlertUtils.showToast(
+            getActivity(),
+            getActivity().getString(R.string.toast_scenario_data_exporting)
+        );
 
         final Data exportData = (Data)requestData;
         final ScenarioExporter sex = new ScenarioExporter(exportData.scenario, getActivity());

@@ -64,4 +64,19 @@
     <string name="export_scenario_data">Export data</string>
     <string name="import_scenario_data">Import data</string>
     <string name="install_plugins">Install plugins</string>
+    <string name="empty_scenarios_list">There are no scenarios installed.\nInstall one from the menu.</string>
+    <string name="no_plugins_install_error">Can\'t find any plugin to install</string>
+    <string name="plugins_install_error_mkdir_failed">Can\'t create Plugins directory</string>
+    <string name="plugins_install_error_mkdir_file_failed">\"Can\'t create directory: \"</string>
+    <string name="toast_scenario_data_exporting">Exporting...</string>
+    <string name="toast_scenario_data_importing">Importing...</string>
+    <string name="scenario_file_download_title">Downloading scenario %s</string>
+    <string name="generic_error">Failed for unknown reasons</string>
+    <string name="scenario_data_export_error_nothing">Nothing to export</string>
+    <string name="scenario_installer_error_open">Can\'t open selected file</string>
+    <string name="scenario_installer_error_mkdir">Can\'t create directory: %s</string>
+    <string name="toast_scenario_install">Installing...</string>
+    <string name="toast_scenario_download">Downloading...</string>
+    <string name="toast_scenario_uninstall">Uninstalling...</string>
+    <string name="never_played">Never</string>
 </resources>

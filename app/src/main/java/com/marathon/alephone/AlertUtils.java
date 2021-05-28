@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -31,7 +32,7 @@ public class AlertUtils {
         showWithIcon(activity, title, text, android.R.drawable.ic_dialog_info);
     }
 
-    public static void showOnetimeInfo(
+    public static boolean showOnetimeInfo(
             final String id,
             final Activity activity,
             final String title,
@@ -40,7 +41,10 @@ public class AlertUtils {
         if (!getPrefBool(activity, id, false)) {
             showWithIcon(activity, title, text, android.R.drawable.ic_dialog_info);
             setPrefBool(activity, id, true);
+            return true;
         }
+
+        return false;
     }
 
     private static void showWithIcon(final Activity activity, final String title, final String text, final int icon) {
@@ -147,6 +151,15 @@ public class AlertUtils {
                         })
                         .show()
                 ;
+            }
+        });
+    }
+
+    public static void showToast(final Activity activity, final String message) {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -2,11 +2,13 @@ package com.marathon.alephone.processors;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.widget.Toast;
 
 import com.marathon.alephone.AlertUtils;
 import com.marathon.alephone.NotificationsManager;
 import com.marathon.alephone.R;
 import com.marathon.alephone.IInstallListener;
+import com.marathon.alephone.ScenarioSelectorActivity;
 import com.marathon.alephone.scenario.IScenarioManager;
 import com.marathon.alephone.scenario.ScenarioEntry;
 import com.marathon.alephone.scenario.ScenarioInstaller;
@@ -25,7 +27,7 @@ public class ScenarioInstallProcessor extends SAFFileLongProcessor {
     }
 
     public static final String NAME = "com.marathon.alephone.SCENARIO_INSTALL_PROCESSOR";
-    private final static String SCENARIO_ADD_SHOWN_KEY = "scenario_ADD_shown";
+    private final static String SCENARIO_ADD_SHOWN_KEY = "scenario_add_shown";
 
     private final IScenarioManager scenarioManager;
 
@@ -64,12 +66,17 @@ public class ScenarioInstallProcessor extends SAFFileLongProcessor {
             return;
         }
 
-        AlertUtils.showOnetimeInfo(
+        if (!AlertUtils.showOnetimeInfo(
             SCENARIO_ADD_SHOWN_KEY,
             getActivity(),
             getActivity().getString(R.string.scenario_add_title),
             getActivity().getString(R.string.scenario_add_text)
-        );
+        )) {
+            AlertUtils.showToast(
+                getActivity(),
+                getActivity().getString(R.string.toast_scenario_install)
+            );
+        }
 
         ScenarioInstaller di = new ScenarioInstaller(data.getData(), getActivity());
         Data installData = (Data)requestData;

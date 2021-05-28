@@ -71,7 +71,9 @@ public class ScenarioSelectorItem extends RecyclerView.ViewHolder {
         SimpleDateFormat f = new SimpleDateFormat("dd/mm/yyyy hh:mm");
 
         this.lastPlayedView.setText(
-            de.lastPlayed == null ? "Never" : f.format(de.lastPlayed)
+            de.lastPlayed == null
+                ? activity.getString(R.string.never_played)
+                : f.format(de.lastPlayed)
         );
 
         this.runButton.setOnClickListener(new View.OnClickListener() {

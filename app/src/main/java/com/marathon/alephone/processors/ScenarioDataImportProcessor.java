@@ -2,11 +2,13 @@ package com.marathon.alephone.processors;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.widget.Toast;
 
 import com.marathon.alephone.AlertUtils;
 import com.marathon.alephone.NotificationsManager;
 import com.marathon.alephone.R;
 import com.marathon.alephone.IInstallListener;
+import com.marathon.alephone.ScenarioSelectorActivity;
 import com.marathon.alephone.scenario.ScenarioEntry;
 import com.marathon.alephone.scenario.ScenarioExporter;
 import com.marathon.alephone.scenario.ScenarioInstaller;
@@ -98,6 +100,11 @@ public class ScenarioDataImportProcessor extends SAFFileLongProcessor {
             getActivity()
         );
 
+        AlertUtils.showToast(
+            getActivity(),
+            getActivity().getString(R.string.toast_scenario_data_importing)
+        );
+
         di.installData(
             new IInstallListener() {
                 @Override
@@ -134,7 +141,8 @@ public class ScenarioDataImportProcessor extends SAFFileLongProcessor {
             },
             new File(importData.scenario.rootPath),
             importData.scenario.packageHash,
-            Arrays.asList(ScenarioExporter.MANIFEST_NAME)
+            Arrays.asList(ScenarioExporter.MANIFEST_NAME),
+            false
         );
     }
 

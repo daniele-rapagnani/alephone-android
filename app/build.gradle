@@ -10,7 +10,6 @@ android {
     defaultConfig {
         aaptOptions {
             noCompress ''
-            //ignoreAssetsPattern 'HD Monsters:HD Textures:HD Weapons:Enhanced HUD:TTEP v7'
         }
 
         applicationId "com.marathon.alephone"
@@ -24,21 +23,6 @@ android {
                 cppFlags "-std=c++14"
                 abiFilters 'armeabi-v7a', 'arm64-v8a'
             }
-        }
-    }
-    flavorDimensions "games"
-    productFlavors {
-        marathon {
-            dimension "games"
-            applicationId = "com.alephone.marathon"
-        }
-        marathon2 {
-            dimension "games"
-            applicationId = "com.alephone.marathon2"
-        }
-        marathonInfinity {
-            dimension "games"
-            applicationId = "com.alephone.marathoninfinity"
         }
     }
     buildTypes {

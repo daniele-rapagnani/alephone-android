@@ -3,6 +3,10 @@ package com.marathon.alephone.scenario;
 import android.content.Context;
 import android.net.Uri;
 
+import com.marathon.alephone.IInstallListener;
+
+import org.apache.commons.io.FilenameUtils;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -20,14 +24,21 @@ public class ScenarioInstaller {
     private final Uri source;
     private final Context context;
 
+    protected class ScenarioException extends Exception {
+        public ScenarioException(String message) {
+            super(message);
+        }
+    }
+
     public ScenarioInstaller(Uri source, Context context) {
         this.source = source;
         this.context = context;
     }
 
-    public void install(IScenarioInstallListener listener) {
-        long size = 0;
-
+    public void install(
+        IInstallListener listener,
+        boolean deleteAfterInstall
+    ) {
         String md5 = null;
 
         try {
@@ -39,10 +50,14 @@ public class ScenarioInstaller {
 
         File filesDir = new File(context.getFilesDir(), md5);
         installData(listener, filesDir, md5, null);
+
+        if (deleteAfterInstall) {
+            this.context.getContentResolver().delete(this.source, null, null);
+        }
     }
 
     public void installData(
-        IScenarioInstallListener listener,
+        IInstallListener listener,
         File filesDir,
         String md5,
         List<String> excludeFiles
@@ -52,7 +67,7 @@ public class ScenarioInstaller {
         excludeFiles = excludeFiles != null ? excludeFiles : new ArrayList<String>();
 
         try {
-            int totalCount = getEntriesCount();
+            int totalCount = validateScenario();
             InputStream is = context.getContentResolver().openInputStream(this.source);
 
             if (is == null) {
@@ -63,14 +78,13 @@ public class ScenarioInstaller {
             ZipInputStream zis = new ZipInputStream(new BufferedInputStream(is));
 
             ZipEntry ze;
-            byte[] buffer = new byte[1024];
+            byte[] buffer = new byte[1024 * 8];
             int count;
             int processedCount = 0;
 
             listener.onDataInstallStarted(filesDir, totalCount, md5);
 
-            while ((ze = zis.getNextEntry()) != null)
-            {
+            while ((ze = zis.getNextEntry()) != null) {
                 String filename = ze.getName();
                 boolean skip = false;
 
@@ -100,8 +114,7 @@ public class ScenarioInstaller {
                     File fo = new File(filesDir, filename);
                     FileOutputStream fouts = new FileOutputStream(fo);
 
-                    while ((count = zis.read(buffer)) != -1)
-                    {
+                    while ((count = zis.read(buffer)) != -1) {
                         fouts.write(buffer, 0, count);
                         size += count;
                     }
@@ -150,18 +163,31 @@ public class ScenarioInstaller {
         }
     }
 
-    private int getEntriesCount() throws IOException {
+    private int validateScenario() throws IOException, ScenarioException {
         InputStream is = getInputStream();
 
-        ZipInputStream zis = new ZipInputStream(new BufferedInputStream(is));
+        ZipInputStream zis = new ZipInputStream(is);
         int count = 0;
+        boolean valid = false;
+        ZipEntry entry = null;
 
-        while (zis.getNextEntry() != null) {
+        while ((entry = zis.getNextEntry()) != null) {
+            File f = new File(entry.getName());
+            String name = FilenameUtils.getName(f.getParent());
+
+            if (name != null && (name.equals("MML") || name.equals("Scripts"))) {
+                valid = true;
+            }
+
             count++;
             zis.closeEntry();
         }
 
         zis.close();
+
+        if (!valid) {
+            throw new ScenarioException("Invalid scenario file");
+        }
 
         return count;
     }

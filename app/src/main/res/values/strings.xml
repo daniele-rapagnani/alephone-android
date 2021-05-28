@@ -13,6 +13,22 @@
 
     <string name="scenario_install_notification_title">Installing</string>
     <string name="scenario_install_notification_text">Installing Aleph One scenario...</string>
+    <string name="scenario_install_error_dialog_title">Error installing scenario</string>
+
+    <string name="scenario_export_default_filename">%s_backup_%s.zip</string>
+    <string name="scenario_export_notification_title">Exporting</string>
+    <string name="scenario_export_notification_text">Exporting scenario data</string>
+    <string name="scenario_export_success_dialog_title">Exported</string>
+    <string name="scenario_export_success_dialog_text">Scenario data exported successfully</string>
+    <string name="scenario_export_error_dialog_title">Error exporting</string>
+
+    <string name="scenario_import_notification_title">Importing</string>
+    <string name="scenario_import_notification_text">Importing scenario data</string>
+    <string name="scenario_import_success_dialog_title">Imported</string>
+    <string name="scenario_import_success_dialog_text">Scenario data imported successfully</string>
+    <string name="scenario_import_error_dialog_title">Error importing</string>
+    <string name="scenario_import_error_dialog_text_invalid">The file you select is not valid scenario data</string>
+    <string name="scenario_import_error_dialog_text_mismatch">The file you selected is for \'%s\', it can\'t be imported in \'%s\'</string>
 
     <string name="scenario_uninstall_notification_title">Uninstalling</string>
     <string name="scenario_uninstall_notification_text">Uninstalling \"%s\"</string>
@@ -23,6 +39,12 @@
 
     <string name="scenario_download_error_title">Scenario download error</string>
     <string name="scenario_download_error_text">Error downloading scenario: %s</string>
+
+    <string name="plugins_install_notification_title">Plugins</string>
+    <string name="plugins_install_notification_text">Installing plugins</string>
+    <string name="plugins_install_success_dialog_title">Installed</string>
+    <string name="plugins_install_success_dialog_text">Plugins installed successfully: %s</string>
+    <string name="plugins_install_error_dialog_title">Error installing</string>
 
     <string name="scenario_download_title">Download started</string>
     <string name="scenario_download_text">Check your notifications to see the download\'s progress.</string>
@@ -41,4 +63,5 @@
     <string name="phoenix_url">http://simplici7y.com/version/file/998/Marathon_Phoenix_1.3.zip</string>
     <string name="export_scenario_data">Export data</string>
     <string name="import_scenario_data">Import data</string>
+    <string name="install_plugins">Install plugins</string>
 </resources>

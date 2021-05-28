@@ -65,13 +65,10 @@
 
     <Button
         android:id="@+id/run_scenario"
-        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="60dp"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorPrimary"
-        android:text="@string/run_scenario"
-        android:textColor="@color/colorPrimary"
-        android:textColorHighlight="@color/colorPrimaryDark" />
+        android:text="@string/run_scenario" />
 
     <Space
         android:layout_width="10dp"
@@ -80,11 +77,13 @@
 
     <Button
         android:id="@+id/scenario_menu_button"
-        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="30dp"
         android:layout_height="wrap_content"
         android:layout_weight="0"
+        android:backgroundTint="@android:color/transparent"
         android:text="&#8942;"
-        android:textAppearance="?android:textAppearanceLarge" />
+        android:textAppearance="?android:textAppearanceLarge"
+        android:textStyle="bold" />
 
 </LinearLayout>

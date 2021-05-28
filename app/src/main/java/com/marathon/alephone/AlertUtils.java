@@ -1,10 +1,11 @@
 package com.marathon.alephone;
 
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 
-import com.marathon.alephone.scenario.IScenarioInstallListener;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,8 @@ public class AlertUtils {
         void canceled();
     }
 
+    private final static String DIALOGS_PREFS = "dialogsprefs";
+
     public static void showError(final Activity activity, final String title, final String text) {
         showWithIcon(activity, title, text, android.R.drawable.ic_dialog_alert);
     }
@@ -28,11 +31,23 @@ public class AlertUtils {
         showWithIcon(activity, title, text, android.R.drawable.ic_dialog_info);
     }
 
+    public static void showOnetimeInfo(
+            final String id,
+            final Activity activity,
+            final String title,
+            final String text
+    ) {
+        if (!getPrefBool(activity, id, false)) {
+            showWithIcon(activity, title, text, android.R.drawable.ic_dialog_info);
+            setPrefBool(activity, id, true);
+        }
+    }
+
     private static void showWithIcon(final Activity activity, final String title, final String text, final int icon) {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                new AlertDialog.Builder(activity)
+                new MaterialAlertDialogBuilder(activity)
                         .setTitle(title)
                         .setMessage(text)
                         .setCancelable(true)
@@ -58,7 +73,7 @@ public class AlertUtils {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                new AlertDialog.Builder(activity)
+                new MaterialAlertDialogBuilder(activity)
                         .setTitle(title)
                         .setMessage(text)
                         .setCancelable(true)
@@ -101,7 +116,7 @@ public class AlertUtils {
                 final List<T> selected = new ArrayList<>();
                 selected.add(choices.get(0));
 
-                new AlertDialog.Builder(activity)
+                new MaterialAlertDialogBuilder(activity)
                         .setTitle(title)
                         .setCancelable(true)
                         .setIcon(android.R.drawable.ic_dialog_info)
@@ -134,5 +149,18 @@ public class AlertUtils {
                 ;
             }
         });
+    }
+
+    protected static boolean getPrefBool(Context c, String key, boolean def) {
+        SharedPreferences pref = c.getSharedPreferences(DIALOGS_PREFS, Context.MODE_PRIVATE);
+        return pref.getBoolean(key, def);
+    }
+
+    protected static void setPrefBool(Context c, String key, boolean val) {
+        SharedPreferences pref = c.getSharedPreferences(DIALOGS_PREFS, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor e = pref.edit();
+        e.putBoolean(key, val);
+        e.commit();
     }
 }

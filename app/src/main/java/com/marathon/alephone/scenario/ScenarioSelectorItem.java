@@ -1,9 +1,5 @@
 package com.marathon.alephone.scenario;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -11,19 +7,18 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.marathon.alephone.AlephOneActivity;
-import com.marathon.alephone.AlertUtils;
-import com.marathon.alephone.NotificationsManager;
 import com.marathon.alephone.R;
 import com.marathon.alephone.ScenarioSelectorActivity;
+import com.marathon.alephone.processors.FileProcessingRequest;
+import com.marathon.alephone.processors.PluginsInstallProcessor;
+import com.marathon.alephone.processors.ScenarioDataExportProcessor;
+import com.marathon.alephone.processors.ScenarioDataImportProcessor;
 
 import org.apache.commons.io.FileUtils;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 
 public class ScenarioSelectorItem extends RecyclerView.ViewHolder {
@@ -101,11 +96,25 @@ public class ScenarioSelectorItem extends RecyclerView.ViewHolder {
                                 return true;
 
                             case R.id.export_data:
-                                activity.onExportScenarioData(de);
+                                activity.startFileProcessing(new FileProcessingRequest(
+                                    ScenarioDataExportProcessor.NAME,
+                                    new ScenarioDataExportProcessor.Data(de)
+                                ));
+
                                 return true;
 
                             case R.id.import_data:
-                                activity.onImportScenarioData(de);
+                                activity.startFileProcessing(new FileProcessingRequest(
+                                    ScenarioDataImportProcessor.NAME,
+                                    new ScenarioDataImportProcessor.Data(de)
+                                ));
+                                return true;
+
+                            case R.id.install_plugins:
+                                activity.startFileProcessing(new FileProcessingRequest(
+                                        PluginsInstallProcessor.NAME,
+                                        new PluginsInstallProcessor.Data(de)
+                                ));
                                 return true;
 
                             default:

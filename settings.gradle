@@ -5,4 +5,4 @@ gradle.ext.targetSdkVersion = 28
 gradle.ext.libDistributionRoot = 'distribution'
 gradle.ext.ndkVersion = '21.4.7075529'
 
-include ':app', ':SDL2', ':SDL_image', ':SDL_mixer', ':SDL_ttf', ':SDL_net'
+include ':app', ':SDL2', ':SDL_image', ':SDL_mixer', ':SDL_ttf', ':SDL_net', ':vorbis'

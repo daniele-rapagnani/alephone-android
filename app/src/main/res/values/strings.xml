@@ -1,3 +1,82 @@
 <resources>
-    <string name="app_name">AlephOne</string>
+    <string name="app_name">Aleph One</string>
+    <string name="data_item_text">Unknown scenario</string>
+    <string name="add_folder">Add scenario</string>
+    <string name="run_scenario">Run</string>
+    <string name="delete_scenario">Uninstall</string>
+    <string name="last_played_label">Last played:</string>
+    <string name="size_label">Size:</string>
+    <string name="download_scenario">Download scenario</string>
+
+    <string name="scenario_already_installed_title">Nothing to do</string>
+    <string name="scenario_already_installed_text">Nothing to do</string>
+
+    <string name="scenario_install_notification_title">Installing</string>
+    <string name="scenario_install_notification_text">Installing Aleph One scenario...</string>
+    <string name="scenario_install_error_dialog_title">Error installing scenario</string>
+
+    <string name="scenario_export_default_filename">%s_backup_%s.zip</string>
+    <string name="scenario_export_notification_title">Exporting</string>
+    <string name="scenario_export_notification_text">Exporting scenario data</string>
+    <string name="scenario_export_success_dialog_title">Exported</string>
+    <string name="scenario_export_success_dialog_text">Scenario data exported successfully</string>
+    <string name="scenario_export_error_dialog_title">Error exporting</string>
+
+    <string name="scenario_import_notification_title">Importing</string>
+    <string name="scenario_import_notification_text">Importing scenario data</string>
+    <string name="scenario_import_success_dialog_title">Imported</string>
+    <string name="scenario_import_success_dialog_text">Scenario data imported successfully</string>
+    <string name="scenario_import_error_dialog_title">Error importing</string>
+    <string name="scenario_import_error_dialog_text_invalid">The file you select is not valid scenario data</string>
+    <string name="scenario_import_error_dialog_text_mismatch">The file you selected is for \'%s\', it can\'t be imported in \'%s\'</string>
+
+    <string name="scenario_uninstall_notification_title">Uninstalling</string>
+    <string name="scenario_uninstall_notification_text">Uninstalling \"%s\"</string>
+    <string name="scenario_uninstall_error_title">Error uninstalling</string>
+
+    <string name="scenario_uninstall_alert_title">Delete scenario?</string>
+    <string name="scenario_uninstall_alert_text">Do you really want to delete this scenario?\nAll saves will be deleted too.</string>
+
+    <string name="scenario_download_error_title">Scenario download error</string>
+    <string name="scenario_download_error_text">Error downloading scenario: %s</string>
+
+    <string name="plugins_install_notification_title">Plugins</string>
+    <string name="plugins_install_notification_text">Installing plugins</string>
+    <string name="plugins_install_success_dialog_title">Installed</string>
+    <string name="plugins_install_success_dialog_text">Plugins installed successfully: %s</string>
+    <string name="plugins_install_error_dialog_title">Error installing</string>
+
+    <string name="scenario_download_title">Download started</string>
+    <string name="scenario_download_text">Check your notifications to see the download\'s progress.</string>
+    <string name="scenario_add_title">Install started</string>
+    <string name="scenario_add_text">Check your notifications to see the install\'s progress.</string>
+    <string name="scenario_download_choose">Choose a scenario to download from the list</string>
+
+    <string name="marathon_url">https://github.com/Aleph-One-Marathon/alephone/releases/download/release-20210408/Marathon-20210408-Data.zip</string>
+    <string name="marathon2_url">https://github.com/Aleph-One-Marathon/alephone/releases/download/release-20210408/Marathon2-20210408-Data.zip</string>
+    <string name="marathoninf_url">https://github.com/Aleph-One-Marathon/alephone/releases/download/release-20210408/MarathonInfinity-20210408-Data.zip</string>
+    <string name="evil_url">http://files3.bungie.org/trilogy/MarathonEvil.zip</string>
+    <string name="red_url">http://files3.bungie.org/trilogy/MarathonRED.zip</string>
+    <string name="tempusirae_url">http://nardofiles.bungie.org/Tempus_Irae.zip</string>
+    <string name="eternal_url">http://eternal.bungie.org/files/_releases/EternalXv120.zip</string>
+    <string name="rubiconx_url">http://files5.bungie.org/marathon/marathonRubiconX.zip</string>
+    <string name="phoenix_url">http://simplici7y.com/version/file/998/Marathon_Phoenix_1.3.zip</string>
+    <string name="export_scenario_data">Export data</string>
+    <string name="import_scenario_data">Import data</string>
+    <string name="install_plugins">Install plugins</string>
+    <string name="empty_scenarios_list">There are no scenarios installed.\nInstall one from the menu.</string>
+    <string name="no_plugins_install_error">Can\'t find any plugin to install</string>
+    <string name="plugins_install_error_mkdir_failed">Can\'t create Plugins directory</string>
+    <string name="plugins_install_error_mkdir_file_failed">\"Can\'t create directory: \"</string>
+    <string name="toast_scenario_data_exporting">Exporting...</string>
+    <string name="toast_scenario_data_importing">Importing...</string>
+    <string name="scenario_file_download_title">Downloading scenario %s</string>
+    <string name="generic_error">Failed for unknown reasons</string>
+    <string name="scenario_data_export_error_nothing">Nothing to export</string>
+    <string name="scenario_installer_error_open">Can\'t open selected file</string>
+    <string name="scenario_installer_error_mkdir">Can\'t create directory: %s</string>
+    <string name="toast_scenario_install">Installing...</string>
+    <string name="toast_scenario_download">Downloading...</string>
+    <string name="toast_scenario_uninstall">Uninstalling...</string>
+    <string name="never_played">Never</string>
 </resources>

@@ -19,7 +19,7 @@ allprojects {
     repositories {
         google()
         jcenter()
-        
+        maven { url 'https://jitpack.io' }
     }
 }
 
@@ -54,6 +54,15 @@ ext.distHeaders = {
                 from: "src/main/cpp/" + from,
                 into: into ? into : "@@projName@@/include",
                 include: "**/*.h"
+        ]
+}
+
+ext.distBuiltHeaders = {
+    include, type = "ndkBuild", into = null ->
+        return [
+                from: ".externalNativeBuild/${type}/@@buildType@@/",
+                into: into ? into : "@@projName@@/include-built/@@buildType@@",
+                include: include
         ]
 }
 

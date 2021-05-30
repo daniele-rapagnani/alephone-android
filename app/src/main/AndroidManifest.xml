@@ -11,19 +11,25 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:theme"
+        android:usesCleartextTraffic="true"
         android:requestLegacyExternalStorage="true">
 
         <activity
-            android:name="com.marathon.alephone.MainActivity"
+            android:name="com.marathon.alephone.ScenarioSelectorActivity"
             android:label="@string/app_name"
             android:alwaysRetainTaskState="true"
             android:launchMode="singleInstance"
-            android:screenOrientation="landscape"
         >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.marathon.alephone.AlephOneActivity"
+            android:screenOrientation="landscape"
+        >
         </activity>
 
         <activity
@@ -35,5 +41,4 @@
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 </manifest>

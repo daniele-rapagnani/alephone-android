@@ -13,15 +13,12 @@
 [submodule "app/src/main/cpp/alephone"]
 	path = app/src/main/cpp/alephone
 	url = git@github.com:daniele-rapagnani/alephone.git
-[submodule "app/src/marathon/assets"]
-	path = app/src/marathon/assets
-	url = git@github.com:Aleph-One-Marathon/data-marathon.git
-[submodule "app/src/marathon2/assets"]
-	path = app/src/marathon2/assets
-	url = git@github.com:Aleph-One-Marathon/data-marathon-2.git
-[submodule "app/src/marathonInfinity/assets"]
-	path = app/src/marathonInfinity/assets
-	url = https://github.com/Aleph-One-Marathon/data-marathon-infinity
 [submodule "SDL2/src/main/cpp/SDL"]
 	path = SDL2/src/main/cpp/SDL
 	url = git@github.com:libsdl-org/SDL.git
+[submodule "vorbis/src/main/cpp/vorbis"]
+	path = vorbis/src/main/cpp/vorbis
+	url = git@github.com:xiph/vorbis.git
+[submodule "vorbis/src/main/cpp/ogg"]
+	path = vorbis/src/main/cpp/ogg
+	url = git@github.com:xiph/ogg.git

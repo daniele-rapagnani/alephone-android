@@ -57,6 +57,15 @@ ext.distHeaders = {
         ]
 }
 
+ext.distBuiltHeaders = {
+    include, type = "ndkBuild", into = null ->
+        return [
+                from: ".externalNativeBuild/${type}/@@buildType@@/",
+                into: into ? into : "@@projName@@/include-built/@@buildType@@",
+                include: include
+        ]
+}
+
 ext.distLib = {
     libName, type = "ndkBuild", projName = "@@projName@@", from = null ->
         return [

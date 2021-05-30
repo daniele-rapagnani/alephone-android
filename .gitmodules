@@ -16,3 +16,9 @@
 [submodule "SDL2/src/main/cpp/SDL"]
 	path = SDL2/src/main/cpp/SDL
 	url = git@github.com:libsdl-org/SDL.git
+[submodule "vorbis/src/main/cpp/vorbis"]
+	path = vorbis/src/main/cpp/vorbis
+	url = git@github.com:xiph/vorbis.git
+[submodule "vorbis/src/main/cpp/ogg"]
+	path = vorbis/src/main/cpp/ogg
+	url = git@github.com:xiph/ogg.git

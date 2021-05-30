@@ -139,6 +139,19 @@ set_target_properties(
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../../distribution/SDL_net/include)
 
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../../distribution/SDL_net/include)
+
+# Vorbis
+add_library(vorbis SHARED IMPORTED)
+set_target_properties(
+        vorbis PROPERTIES IMPORTED_LOCATION
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../../distribution/vorbis/lib/${LIB_BUILD_TYPE_DIR}/${CMAKE_ANDROID_ARCH_ABI}/libvorbis.so
+)
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../../distribution/vorbis/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../../distribution/vorbis/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../../distribution/vorbis/include-built/${LIB_BUILD_TYPE_DIR}/${CMAKE_ANDROID_ARCH_ABI}/ogg/include)
+
 # Boost
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/boost_1_70_0)
 
@@ -147,6 +160,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/boost_1_70_0)
 ###
 
 #add_compile_definitions(HAVE_OPENGL)
+add_compile_definitions(HAVE_VORBISFILE)
 add_compile_definitions(HAVE_UNISTD_H)
 add_compile_definitions(HAVE_LUA)
 add_compile_definitions(HAVE_MEMMOVE)
@@ -154,4 +168,4 @@ add_compile_definitions(HAVE_SDL_IMAGE)
 add_compile_definitions(SDL)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/alephone)
 
-target_link_libraries(main SDL SDL_image SDL_mixer SDL_net png jpeg webp webpdecoder FLAC modplug mpg123 ogg timidity SDL_ttf SDLmain hidapi z android)
+target_link_libraries(main SDL SDL_image SDL_mixer SDL_net png jpeg webp webpdecoder FLAC modplug mpg123 ogg vorbis timidity SDL_ttf SDLmain hidapi z android)

@@ -1,0 +1,38 @@
+apply plugin: 'com.android.library'
+
+android {
+    ndkVersion gradle.ndkVersion
+    compileSdkVersion gradle.sdkVersion
+
+    defaultConfig {
+        minSdkVersion gradle.minSdkVersion
+        targetSdkVersion gradle.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+
+        externalNativeBuild {
+            cmake {
+                arguments "-DBUILD_SHARED_LIBS=1 -DBUILD_TESTING=0"
+                //targets 'ogg', 'vorbis'
+            }
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            path 'src/main/cpp/CMakeLists.txt'
+        }
+    }
+
+    afterEvaluate {
+        defineDistributeTasks(project, [
+            distHeaders("vorbis/include"),
+            distHeaders("ogg/include"),
+            distBuiltHeaders("**/ogg/include/**/*.h", "cmake"),
+            distLib("libvorbis.so", "cmake"),
+            distLib("libvorbisenc.so", "cmake"),
+            distLib("libvorbisfile.so", "cmake"),
+            distLib("libogg.so", "cmake")
+        ])
+    }
+}
